@@ -1,4 +1,5 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import {
   PhoneCall, Globe2, ShieldCheck, Antenna, CheckCircle2,
@@ -617,11 +618,18 @@ const GlobalReset = () => (
     .copy-wide { max-width: 1000px; line-height: 1.8; font-size: clamp(15.5px, 2.2vw, 19px); margin: 0 auto; text-align: center; }
     .copy-wide p { margin: 0 0 16px; }
 
-    /* Biz Kimiz – mobil: görseli gizle, yazıyı ortala (fonta dokunma) */
+    /* Biz Kimiz – mobil düzen: görseller gizli, yazı tam genişlik ve sola yaslı */
     @media (max-width: 900px){
       #hakkimizda > div { grid-template-columns: 1fr !important; }
       #hakkimizda .about-media { display:none !important; }
-      #hakkimizda .copy { text-align:center !important; margin: 0 auto !important; }
+      #hakkimizda .copy{
+        max-width: none !important;
+        width: 100% !important;
+        text-align: left !important;
+        margin: 0 !important;
+        font-size: clamp(15px, 3.8vw, 18px) !important;
+        line-height: 1.7;
+      }
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -643,8 +651,7 @@ const GlobalReset = () => (
 
     .fc-plain{ padding:0 !important; border:0 !important; background:transparent !important; box-shadow:none !important; }
 
-    /* (Bu kısmı sen zaten hallettim dedin, olduğu gibi bıraktım)
-       Select görünürlüğü */
+    /* Select görünürlüğü */
     select { background:#ffffff !important; color:#111827 !important; }
     select option { color:#111827; }
 
@@ -664,24 +671,25 @@ const GlobalReset = () => (
 
     /* ======= Mobile tweaks ======= */
     @media (max-width: 900px){
-      /* 6: mobilde scroll-snap kapalı */
       html { scroll-snap-type: none; }
-
       .nav-links { display:none; }
       .hamburger { display:inline-flex; }
 
-      /* Menü: fixed overlay — bulunduğun yerde açılır, kaydırılabilir */
+      /* Gerçek tam ekran overlay */
       .mobileMenu {
         position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        z-index: 999;
+        inset: 0;
+        z-index: 9999;
         background: rgba(15,23,42,.98);
         backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         border-bottom:1px solid #1f2937;
         box-shadow: 0 12px 28px rgba(0,0,0,.35);
         padding: calc(72px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
         display:flex; flex-direction:column; gap:14px;
+        height: 100dvh;
         overflow:auto;
+        -webkit-overflow-scrolling: touch;
       }
       .mobileMenu a, .mobileMenu .lang-plain { padding:12px 10px; border-radius:10px; border:1px solid #233146; }
       .brand-title { display:none; }
@@ -787,7 +795,8 @@ const Navbar = () => {
     zIndex: 30,
     background: "rgba(15,23,42,.88)",
     borderBottom: "1px solid #1f2937",
-    backdropFilter: "blur(6px)",
+    backdropFilter: open ? "none" : "blur(6px)",
+    WebkitBackdropFilter: open ? "none" : "blur(6px)",
   };
 
   // Menu açıkken body scroll'u kilitle
@@ -807,69 +816,45 @@ const Navbar = () => {
   };
 
   return (
-    <header style={headerStyle}>
-      <nav
-        className="nav-wrap"
-        style={{
-          maxWidth: 1472,
-          margin: "0 auto",
-          height: 72,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 max(16px, env(safe-area-inset-left))",
-          gap: 16,
-          position: "relative"
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div
-            style={{
-              width: 44, height: 44, borderRadius: "50%", overflow: "hidden",
-              background: "#ffffff", border: "1px solid #334155",
-              display: "flex", alignItems: "center", justifyContent: "center", padding: 2
-            }}
-            aria-label="Logo"
-          >
-            <img
-              src="/images/logo.jpg"
-              srcSet="/images/logo.jpg 1x, /images/logo@2x.jpg 2x"
-              alt="FreeConcept Logo"
-              style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
-            />
-          </div>
-          <div className="brand-title" style={{ fontSize: 20, fontWeight: 800, letterSpacing: ".4px", whiteSpace: "nowrap" }}>
-            {t("nav.brand")}
-          </div>
-        </div>
-
-        {/* Desktop links */}
-        <div className="nav-links" aria-label="Ana navigasyon">
-          <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
-          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hakkimizda")}>{t("nav.about")}</a>
-          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hedefimiz")}>{t("nav.mission")}</a>
-          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "partnerler")}>{t("nav.partners")}</a>
-          <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
-          <LanguageDropdown />
-        </div>
-
-        {/* Mobile button */}
-        <button
-          className="hamburger"
-          aria-label="Menüyü aç/kapat"
-          aria-expanded={open}
-          aria-controls="mobileMenu"
-          onClick={() => setOpen(o => !o)}
-          onKeyDown={onHamburgerKey}
+    <>
+      <header style={headerStyle}>
+        <nav
+          className="nav-wrap"
+          style={{
+            maxWidth: 1472,
+            margin: "0 auto",
+            height: 72,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 max(16px, env(safe-area-inset-left))",
+            gap: 16,
+            position: "relative"
+          }}
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-        </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div
+              style={{
+                width: 44, height: 44, borderRadius: "50%", overflow: "hidden",
+                background: "#ffffff", border: "1px solid #334155",
+                display: "flex", alignItems: "center", justifyContent: "center", padding: 2
+              }}
+              aria-label="Logo"
+            >
+              <img
+                src="/images/logo.jpg"
+                srcSet="/images/logo.jpg 1x, /images/logo@2x.jpg 2x"
+                alt="FreeConcept Logo"
+                style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+              />
+            </div>
+            <div className="brand-title" style={{ fontSize: 20, fontWeight: 800, letterSpacing: ".4px", whiteSpace: "nowrap" }}>
+              {t("nav.brand")}
+            </div>
+          </div>
 
-        {/* Mobile panel */}
-        {open && (
-          <div id="mobileMenu" className="mobileMenu" role="dialog" aria-modal="true">
+          {/* Desktop links */}
+          <div className="nav-links" aria-label="Ana navigasyon">
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hakkimizda")}>{t("nav.about")}</a>
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hedefimiz")}>{t("nav.mission")}</a>
@@ -877,9 +862,36 @@ const Navbar = () => {
             <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
             <LanguageDropdown />
           </div>
-        )}
-      </nav>
-    </header>
+
+          {/* Mobile button */}
+          <button
+            className="hamburger"
+            aria-label="Menüyü aç/kapat"
+            aria-expanded={open}
+            aria-controls="mobileMenu"
+            onClick={() => setOpen(o => !o)}
+            onKeyDown={onHamburgerKey}
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </nav>
+      </header>
+
+      {/* Mobile panel: BODY'ye portal */}
+      {open && createPortal(
+        <div id="mobileMenu" className="mobileMenu" role="dialog" aria-modal="true">
+          <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
+          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hakkimizda")}>{t("nav.about")}</a>
+          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hedefimiz")}>{t("nav.mission")}</a>
+          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "partnerler")}>{t("nav.partners")}</a>
+          <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
+          <LanguageDropdown />
+        </div>,
+        document.body
+      )}
+    </>
   );
 };
 
