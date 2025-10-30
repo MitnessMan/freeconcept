@@ -90,7 +90,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     "career.email.ph": "E-posta",
     "career.phone.ph": "Telefon (05xx… veya +41…)",
     "career.country": "Ülke Seçiniz",
-    "career.city": "Şehir Seçiniz",
+    "career.city": "Şehir Seiniz",
     "career.chooseCountryFirst": "Önce ülke seçin",
     "career.langs": "Bildiğiniz diller",
     "career.about.ph": "Kısaca kendinizi anlatın",
@@ -618,10 +618,12 @@ const GlobalReset = () => (
     .copy-wide { max-width: 1000px; line-height: 1.8; font-size: clamp(15.5px, 2.2vw, 19px); margin: 0 auto; text-align: center; }
     .copy-wide p { margin: 0 0 16px; }
 
-    /* Biz Kimiz – mobil düzen: görseller gizli, yazı tam genişlik ve sola yaslı */
+    /* Biz Kimiz – mobil düzen: grid'i gerçekten tek sütun yap, görselleri gizle, yazıyı sola hizala */
     @media (max-width: 900px){
-      #hakkimizda > div { grid-template-columns: 1fr !important; }
+      /* Doğru grid kapsayıcısını hedefle */
+      #hakkimizda > div > .about-grid { grid-template-columns: 1fr !important; }
       #hakkimizda .about-media { display:none !important; }
+      #hakkimizda .about-left { padding-right:0 !important; }
       #hakkimizda .copy{
         max-width: none !important;
         width: 100% !important;
@@ -725,7 +727,7 @@ function LanguageDropdown() {
       const target = e.target as HTMLElement;
       if (!target.closest(".lang")) setOpen(false);
     };
-    document.addEventListener("mousedown", close, { passive: true } as any);
+    document.addEventListener("mousedown", close as any);
     return () => document.removeEventListener("mousedown", close as any);
   }, []);
 
@@ -778,14 +780,16 @@ const Navbar = () => {
     if (sectionId) setTimeout(() => scrollToId(sectionId), 80);
   };
 
-  // mobilde dışarı tıklayınca kapat
+  // mobilde dışarı tıklayınca kapat — mobileMenu'yu hariç tut
   React.useEffect(() => {
     const close = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (!target.closest("header")) setOpen(false);
+      const inHeader = !!target.closest("header");
+      const inMobileMenu = !!target.closest("#mobileMenu");
+      if (!inHeader && !inMobileMenu) setOpen(false);
     };
-    document.addEventListener("mousedown", close, { passive: true } as any);
-    return () => document.removeEventListener("mousedown", close as any);
+    document.addEventListener("click", close as any);
+    return () => document.removeEventListener("click", close as any);
   }, []);
 
   // Safe-area destekli başlık
@@ -1146,6 +1150,7 @@ const Home = () => {
       <Section id="hakkimizda" eyebrow={t("sec.about")} dark padTop={200}>
         <h2 className="sr-only">{t("sec.about")}</h2>
         <div
+          className="about-grid"
           style={{
             display: "grid",
             gap: 28,
@@ -1153,7 +1158,7 @@ const Home = () => {
             alignItems: "start",
           }}
         >
-          <div className="reveal" style={{ paddingRight: 8 }}>
+          <div className="reveal about-left" style={{ paddingRight: 8 }}>
             <div className="copy" style={{ opacity: .96, textAlign: "left", color: "#fff" }}>
               <p>{t("about.p1")}</p>
               <p>{t("about.p2")}</p>
