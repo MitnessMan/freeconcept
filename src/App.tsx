@@ -400,13 +400,13 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
 const I18nCtx = React.createContext<{
   lang: LangCode; setLang: (l: LangCode) => void; t: (k: string) => string;
-}>({ lang: "tr", setLang: () => {}, t: (k) => k });
+}>({ lang: "tr", setLang: () => { }, t: (k) => k });
 
 function I18nProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = React.useState<LangCode>(() => {
     try { return (localStorage.getItem("lang") as LangCode) || "tr"; } catch { return "tr"; }
   });
-  const setLang = (l: LangCode) => { setLangState(l); try { localStorage.setItem("lang", l); } catch {} };
+  const setLang = (l: LangCode) => { setLangState(l); try { localStorage.setItem("lang", l); } catch { } };
   const t = React.useCallback((k: string) => I18N[lang][k] ?? I18N.tr[k] ?? k, [lang]);
   return <I18nCtx.Provider value={{ lang, setLang, t }}>{children}</I18nCtx.Provider>;
 }
@@ -877,7 +877,7 @@ const Navbar = () => {
             onKeyDown={onHamburgerKey}
           >
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </nav>
@@ -1275,15 +1275,15 @@ const Home = () => {
 /* =========================================================
    Kariyer Sayfası (Form)
 ========================================================= */
-const HR_EMAIL = "buzdevri330133@gmail.com";
+const HR_EMAIL = "info@freeconcept.net";
 const WHATSAPP_NUMBER_INTL = "905394297969";
 const LANG_OPTIONS = ["Fransızca", "Almanca", "İngilizce", "Türkçe"] as const;
 
-const TR_CITIES = ["Adana","Adıyaman","Afyonkarahisar","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
-const CH_CITIES = ["Aarau","Baden","Baar","Basel","Bern","Biel/Bienne","Carouge","Chur","Dietikon","Emmen","Frauenfeld","Fribourg","Geneve","Genève","Köniz","Kriens","La Chaux-de-Fonds","Lausanne","Lugano","Luzern","Montreux","Meyrin","Neuchâtel","Rapperswil-Jona","Sion","Schaffhausen","St. Gallen","Thun","Uster","Vernier","Wädenswil","Wetzikon","Wil","Winterthur","Yverdon-les-Bains","Zug","Zürich"];
-const DE_CITIES = ["Aachen","Augsburg","Berlin","Bielefeld","Bochum","Bonn","Braunschweig","Bremen","Chemnitz","Dortmund","Dresden","Duisburg","Düsseldorf","Essen","Frankfurt am Main","Freiburg im Breisgau","Gelsenkirchen","Hagen","Hamburg","Hannover","Heidelberg","Herne","Karlsruhe","Kassel","Kiel","Köln","Krefeld","Leipzig","Leverkusen","Lübeck","Magdeburg","Mainz","Mannheim","Mönchengladbach","München","Münster","Nürnberg","Oberhausen","Oldenburg","Osnabrück","Potsdam","Rostock","Saarbrücken","Solingen","Stuttgart","Wiesbaden","Wuppertal"];
-const FR_CITIES = ["Aix-en-Provence","Amiens","Angers","Annecy","Argenteuil","Avignon","Bordeaux","Boulogne-Billancourt","Brest","Caen","Clermont-Ferrand","Dijon","Grenoble","Le Havre","Lille","Limoges","Lyon","Marseille","Metz","Montpellier","Montreuil","Mulhouse","Nancy","Nantes","Nice","Nîmes","Orléans","Paris","Perpignan","Poitiers","Reims","Rennes","Rouen","Saint-Denis","Saint-Étienne","Strasbourg","Toulon","Toulouse","Tours","Villeurbanne"];
-const MA_CITIES = ["Agadir","Al Hoceïma","Béni Mellal","Berkane","Casablanca","Dakhla","El Jadida","Errachidia","Fès","Guelmim","Kénitra","Khémisset","Khouribga","Ksar El-Kébir","Larache","Laâyoune","Marrakech","Meknès","Mohammédia","Nador","Ouarzazate","Oujda","Rabat","Safi","Settat","Taroudant","Taza","Témara","Tétouan","Tanger"];
+const TR_CITIES = ["Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli", "Diyarbakır", "Edirne", "Elazığ", "Erzincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari", "Hatay", "Isparta", "Mersin", "İstanbul", "İzmir", "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir", "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir", "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat", "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman", "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"];
+const CH_CITIES = ["Aarau", "Baden", "Baar", "Basel", "Bern", "Biel/Bienne", "Carouge", "Chur", "Dietikon", "Emmen", "Frauenfeld", "Fribourg", "Geneve", "Genève", "Köniz", "Kriens", "La Chaux-de-Fonds", "Lausanne", "Lugano", "Luzern", "Montreux", "Meyrin", "Neuchâtel", "Rapperswil-Jona", "Sion", "Schaffhausen", "St. Gallen", "Thun", "Uster", "Vernier", "Wädenswil", "Wetzikon", "Wil", "Winterthur", "Yverdon-les-Bains", "Zug", "Zürich"];
+const DE_CITIES = ["Aachen", "Augsburg", "Berlin", "Bielefeld", "Bochum", "Bonn", "Braunschweig", "Bremen", "Chemnitz", "Dortmund", "Dresden", "Duisburg", "Düsseldorf", "Essen", "Frankfurt am Main", "Freiburg im Breisgau", "Gelsenkirchen", "Hagen", "Hamburg", "Hannover", "Heidelberg", "Herne", "Karlsruhe", "Kassel", "Kiel", "Köln", "Krefeld", "Leipzig", "Leverkusen", "Lübeck", "Magdeburg", "Mainz", "Mannheim", "Mönchengladbach", "München", "Münster", "Nürnberg", "Oberhausen", "Oldenburg", "Osnabrück", "Potsdam", "Rostock", "Saarbrücken", "Solingen", "Stuttgart", "Wiesbaden", "Wuppertal"];
+const FR_CITIES = ["Aix-en-Provence", "Amiens", "Angers", "Annecy", "Argenteuil", "Avignon", "Bordeaux", "Boulogne-Billancourt", "Brest", "Caen", "Clermont-Ferrand", "Dijon", "Grenoble", "Le Havre", "Lille", "Limoges", "Lyon", "Marseille", "Metz", "Montpellier", "Montreuil", "Mulhouse", "Nancy", "Nantes", "Nice", "Nîmes", "Orléans", "Paris", "Perpignan", "Poitiers", "Reims", "Rennes", "Rouen", "Saint-Denis", "Saint-Étienne", "Strasbourg", "Toulon", "Toulouse", "Tours", "Villeurbanne"];
+const MA_CITIES = ["Agadir", "Al Hoceïma", "Béni Mellal", "Berkane", "Casablanca", "Dakhla", "El Jadida", "Errachidia", "Fès", "Guelmim", "Kénitra", "Khémisset", "Khouribga", "Ksar El-Kébir", "Larache", "Laâyoune", "Marrakech", "Meknès", "Mohammédia", "Nador", "Ouarzazate", "Oujda", "Rabat", "Safi", "Settat", "Taroudant", "Taza", "Témara", "Tétouan", "Tanger"];
 
 const COUNTRY_CITY: Record<string, string[]> = {
   "Türkiye": TR_CITIES,
