@@ -399,11 +399,13 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
 const I18nCtx = React.createContext<{
   lang: LangCode; setLang: (l: LangCode) => void; t: (k: string) => string;
-}>({ lang: "tr", setLang: () => { }, t: (k) => k });
+}>({ lang: "tr", setLang: () => {}, t: (k) => k });
 
 function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = React.useState<LangCode>(() => (localStorage.getItem("lang") as LangCode) || "tr");
-  const setLang = (l: LangCode) => { setLangState(l); localStorage.setItem("lang", l); };
+  const [lang, setLangState] = React.useState<LangCode>(() => {
+    try { return (localStorage.getItem("lang") as LangCode) || "tr"; } catch { return "tr"; }
+  });
+  const setLang = (l: LangCode) => { setLangState(l); try { localStorage.setItem("lang", l); } catch {} };
   const t = React.useCallback((k: string) => I18N[lang][k] ?? I18N.tr[k] ?? k, [lang]);
   return <I18nCtx.Provider value={{ lang, setLang, t }}>{children}</I18nCtx.Provider>;
 }
@@ -414,7 +416,7 @@ const useT = () => React.useContext(I18nCtx);
 ========================================================= */
 const scrollToId = (id: string) => {
   const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
 };
 
 const Section = ({
@@ -549,7 +551,7 @@ function PartnerLogo({
 }
 
 /* =========================================================
-   Global Stil (+ responsive navbar)
+   Global Stil (+ mobile iyileştirme)
 ========================================================= */
 const GlobalReset = () => (
   <style>{`
@@ -558,13 +560,12 @@ const GlobalReset = () => (
     html { scroll-behavior: smooth; overflow-y: scroll; overflow-x: hidden; scroll-snap-type: y proximity; scroll-padding-top: 72px; }
     #root { max-width: none !important; padding: 0 !important; margin: 0 !important; min-height: 100%; }
     img, svg { max-width: 100%; height: auto; display: inline-block; }
-    body { background: #0f172a; color:#e5e7eb; margin:0; overflow: visible; }
+    body { background: #0f172a; color:#e5e7eb; margin:0; overflow: visible; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    @supports (-webkit-touch-callout: none) { * { -webkit-tap-highlight-color: rgba(0,0,0,0); } }
 
-    .section { padding: 160px 16px; scroll-snap-align: start; }
-    @media (max-width: 1024px){ .section { padding: 140px 16px; } }
-    @media (max-width: 640px){ .section { padding: 110px 14px; } }
+    .section { padding: clamp(80px, 8vw, 160px) 16px; scroll-snap-align: start; }
 
-    .eyebrow { font-size: 24px; line-height: 1.2; }
+    .eyebrow { font-size: clamp(18px, 3.2vw, 24px); line-height: 1.2; }
 
     .grid-services { display: grid; gap: 22px; grid-template-columns: 1fr; }
     @media (min-width: 768px)  { .grid-services { grid-template-columns: repeat(2,minmax(0,1fr)); } }
@@ -572,13 +573,14 @@ const GlobalReset = () => (
 
     /* —— Premium Card —— */
     .featureCard{
-      position:relative; border-radius:16px; padding:18px 18px 20px;
+      position:relative; border-radius:16px; padding:18px;
       background: linear-gradient(180deg, rgba(17,24,39,.9), rgba(15,23,42,.9)) border-box;
       border:1px solid rgba(148,163,184,.16);
       box-shadow: 0 10px 28px rgba(0,0,0,.24);
       overflow:hidden;
       transition: transform .18s ease, box-shadow .22s ease, border-color .22s ease, filter .22s ease;
       backdrop-filter: blur(6px); will-change: transform;
+      touch-action: manipulation;
     }
     .featureCard::before{ content:""; position:absolute; inset:-1px; border-radius:16px;
       background: conic-gradient(from 180deg at 50% 50%, rgba(80,125,255,.45), rgba(25,211,174,.35), rgba(99,102,241,.55), rgba(80,125,255,.45));
@@ -591,30 +593,31 @@ const GlobalReset = () => (
 
     .fc-row { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; position:relative; z-index:1; }
     .chip { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background: rgba(148,163,184,.12); border:1px solid rgba(148,163,184,.22); font-size:12px; color:#cbd5e1; }
-    .fc-title { margin-top:8px; font-weight:800; font-size:20px; color:#fff; }
-    .fc-desc  { margin-top:6px; opacity:.9; }
+    .fc-title { margin-top:8px; font-weight:800; font-size: clamp(16px, 2.3vw, 20px); color:#fff; }
+    .fc-desc  { margin-top:6px; opacity:.9; font-size: 14px; }
 
     .partnerCard {
       position: relative;
       background: radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0) 60%), linear-gradient(180deg,#1f2937 0%, #111827 100%);
-      border: 1px solid #334155; border-radius: 16px; padding: 24px; text-align: center;
+      border: 1px solid #334155; border-radius: 16px; padding: clamp(16px, 3.5vw, 24px); text-align: center;
       transition: box-shadow .22s ease, transform .18s ease, border-color .18s ease; will-change: transform;
       box-shadow: 0 10px 28px rgba(0,0,0,.24); background-clip: padding-box;
     }
     .partnerCard:hover { transform: translateY(-3px); box-shadow: 0 22px 40px rgba(0,0,0,.32); border-color:#3b4758; }
 
-    .navlink { color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: .3px; opacity: .92; transition: opacity .16s ease; }
+    .navlink { color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: .3px; opacity: .92; transition: opacity .16s ease; padding: 8px 10px; border-radius: 8px; }
+    .navlink:focus-visible { outline: 2px solid #475569; outline-offset: 2px; }
     .navlink:hover { opacity: 1; }
 
     .sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
 
-    .copy { max-width: 62ch; line-height: 1.7; font-size: 17.5px; }
+    .copy { max-width: 62ch; line-height: 1.7; font-size: clamp(15.5px, 1.8vw, 17.5px); }
     .copy p { margin: 0 0 14px; }
 
-    .copy-wide { max-width: 1000px; line-height: 1.8; font-size: 19px; margin: 0 auto; text-align: center; }
+    .copy-wide { max-width: 1000px; line-height: 1.8; font-size: clamp(15.5px, 2.2vw, 19px); margin: 0 auto; text-align: center; }
     .copy-wide p { margin: 0 0 16px; }
     @media (max-width: 900px){ #hakkimizda > div { grid-template-columns: 1fr !important; } }
-    @media (max-width: 640px){ .copy-wide { max-width: 100%; font-size: 16.5px; text-align: left; } }
+    @media (max-width: 640px){ .copy-wide { max-width: 100%; text-align: left; } }
 
     @media (prefers-reduced-motion: no-preference) {
       .reveal { opacity: 0; transform: translateY(12px) scale(.98); }
@@ -624,14 +627,14 @@ const GlobalReset = () => (
     .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid #334155; background:#151d2e; color:#cbd5e1; font-size:12px; margin-right:8px; }
 
     .kpi {
-      border-radius:16px; padding:36px;
+      border-radius:16px; padding: clamp(20px, 3.8vw, 36px);
       background: radial-gradient(120% 120% at 20% 0%, rgba(99,102,241,.12), transparent 50%), linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
       border:1px solid #233146; display:flex; align-items:center; justify-content:center; flex-direction:column;
-      min-height:200px; position:relative; overflow:hidden;
+      min-height: clamp(140px, 28vw, 200px); position:relative; overflow:hidden;
     }
     .kpi::after{ content:""; position:absolute; inset:-2px; border-radius:16px; background: radial-gradient(60% 60% at 50% -10%, rgba(148,163,184,.18), transparent 60%); opacity:.4; pointer-events:none; }
-    .kpi strong { line-height:1; letter-spacing:.3px; color:#fff; font-size: clamp(28px, 7vw, 64px); }
-    .kpi span { opacity:.95; margin-top:12px; font-size:18px; color:#fff; }
+    .kpi strong { line-height:1; letter-spacing:.3px; color:#fff; font-size: clamp(28px, 9vw, 64px); }
+    .kpi span { opacity:.95; margin-top:12px; font-size: clamp(14px, 2.8vw, 18px); color:#fff; }
 
     .fc-plain{ padding:0 !important; border:0 !important; background:transparent !important; box-shadow:none !important; }
 
@@ -641,9 +644,17 @@ const GlobalReset = () => (
 
     /* ======= Responsive Navbar ======= */
     .nav-wrap { position: relative; }
-    .nav-links { display:flex; align-items:center; gap:24px; margin-left:auto; }
-    .hamburger { display:none; border:0; background:transparent; color:#fff; padding:8px; border-radius:10px; }
-    .hamburger:focus { outline:2px solid #334155; outline-offset:2px; }
+    .nav-links { display:flex; align-items:center; gap: clamp(12px, 2.2vw, 24px); margin-left:auto; }
+    .hamburger { display:none; border:0; background:transparent; color:#fff; padding: 10px; border-radius:10px; line-height: 0; }
+    .hamburger:focus-visible { outline:2px solid #334155; outline-offset:2px; }
+
+    /* Language dropdown styles (mobile-friendly) */
+    .lang { position: relative; }
+    .lang-plain { display:inline-flex; align-items:center; gap:8px; font-weight:700; color:#fff; background:transparent; border:1px solid #334155; padding:8px 10px; border-radius:10px; cursor:pointer; }
+    .lang-plain:focus-visible { outline:2px solid #475569; outline-offset:2px; }
+    .lang-list { position:absolute; right:0; top: calc(100% + 8px); background: rgba(15,23,42,.98); border:1px solid #334155; border-radius:12px; padding:6px; display:flex; flex-direction:column; gap:4px; min-width: 220px; z-index: 50; backdrop-filter: blur(6px); }
+    .lang-item { text-align:left; padding:10px 12px; border-radius:8px; background:transparent; color:#e5e7eb; border:0; cursor:pointer; }
+    .lang-item:hover, .lang-item:focus { background: rgba(148,163,184,.12); }
 
     @media (max-width: 900px){
       .nav-links { display:none; }
@@ -652,10 +663,10 @@ const GlobalReset = () => (
         position:absolute; top:72px; left:0; right:0; z-index:40;
         background: rgba(15,23,42,.98); backdrop-filter: blur(6px);
         border-bottom:1px solid #1f2937; box-shadow: 0 12px 28px rgba(0,0,0,.35);
-        padding:12px 16px; display:flex; flex-direction:column; gap:14px;
+        padding:12px 16px calc(12px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; gap:14px;
       }
-      .mobileMenu a { padding:10px 4px; border-radius:8px; }
-      .brand-title { display:none; } /* başlık sığmıyorsa gizle */
+      .mobileMenu a, .mobileMenu .lang-plain { padding:12px 10px; border-radius:10px; border:1px solid #233146; }
+      .brand-title { display:none; }
     }
   `}</style>
 );
@@ -685,13 +696,19 @@ function LanguageDropdown() {
       const target = e.target as HTMLElement;
       if (!target.closest(".lang")) setOpen(false);
     };
-    document.addEventListener("click", close);
-    return () => document.removeEventListener("click", close);
+    document.addEventListener("mousedown", close, { passive: true } as any);
+    return () => document.removeEventListener("mousedown", close as any);
   }, []);
 
   return (
     <div className="lang">
-      <button className="lang-plain" onClick={() => setOpen(o => !o)} aria-haspopup="menu" aria-expanded={open}>
+      <button
+        className="lang-plain"
+        onClick={() => setOpen(o => !o)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={t("nav.lang")}
+      >
         {t("nav.lang")} <ChevronDown size={16} />
       </button>
       {open && (
@@ -713,7 +730,7 @@ function LanguageDropdown() {
 }
 
 /* =========================================================
-   Navbar (mobil menü eklendi)
+   Navbar (mobil menü güçlendirildi)
 ========================================================= */
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
@@ -729,6 +746,7 @@ const Navbar = () => {
       return;
     }
     window.location.hash = href.replace("#", "");
+    if (sectionId) setTimeout(() => scrollToId(sectionId), 80);
   };
 
   // mobilde dışarı tıklayınca kapat
@@ -737,21 +755,38 @@ const Navbar = () => {
       const target = e.target as HTMLElement;
       if (!target.closest("header")) setOpen(false);
     };
-    document.addEventListener("click", close);
-    return () => document.removeEventListener("click", close);
+    document.addEventListener("mousedown", close, { passive: true } as any);
+    return () => document.removeEventListener("mousedown", close as any);
   }, []);
 
+  // Safe-area destekli başlık
+  const headerStyle: React.CSSProperties = {
+    position: "sticky",
+    top: 0,
+    zIndex: 30,
+    background: "rgba(15,23,42,.88)",
+    borderBottom: "1px solid #1f2937",
+    backdropFilter: "blur(6px)",
+  };
+
+  // Menu açıkken body scroll'u kilitle
+  React.useEffect(() => {
+    if (open) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [open]);
+
+  const onHamburgerKey = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setOpen(o => !o);
+    }
+  };
+
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 30,
-        background: "rgba(15,23,42,.88)",
-        borderBottom: "1px solid #1f2937",
-        backdropFilter: "blur(6px)",
-      }}
-    >
+    <header style={headerStyle}>
       <nav
         className="nav-wrap"
         style={{
@@ -761,7 +796,7 @@ const Navbar = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 16px",
+          padding: "0 max(16px, env(safe-area-inset-left))",
           gap: 16,
           position: "relative"
         }}
@@ -788,30 +823,36 @@ const Navbar = () => {
         </div>
 
         {/* Desktop links */}
-        <div className="nav-links">
+        <div className="nav-links" aria-label="Ana navigasyon">
           <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
-          <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("hakkimizda"), 80); }}>{t("nav.about")}</a>
-          <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("hedefimiz"), 80); }}>{t("nav.mission")}</a>
-          <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("partnerler"), 80); }}>{t("nav.partners")}</a>
+          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hakkimizda")}>{t("nav.about")}</a>
+          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hedefimiz")}>{t("nav.mission")}</a>
+          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "partnerler")}>{t("nav.partners")}</a>
           <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
           <LanguageDropdown />
         </div>
 
         {/* Mobile button */}
-        <button className="hamburger" aria-label="Menüyü aç/kapat" onClick={() => setOpen(o => !o)}>
-          {/* basit hamburger */}
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <button
+          className="hamburger"
+          aria-label="Menüyü aç/kapat"
+          aria-expanded={open}
+          aria-controls="mobileMenu"
+          onClick={() => setOpen(o => !o)}
+          onKeyDown={onHamburgerKey}
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
           </svg>
         </button>
 
         {/* Mobile panel */}
         {open && (
-          <div className="mobileMenu">
+          <div id="mobileMenu" className="mobileMenu" role="dialog" aria-modal="true">
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
-            <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("hakkimizda"), 80); }}>{t("nav.about")}</a>
-            <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("hedefimiz"), 80); }}>{t("nav.mission")}</a>
-            <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("partnerler"), 80); }}>{t("nav.partners")}</a>
+            <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hakkimizda")}>{t("nav.about")}</a>
+            <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hedefimiz")}>{t("nav.mission")}</a>
+            <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "partnerler")}>{t("nav.partners")}</a>
             <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
             <LanguageDropdown />
           </div>
@@ -870,7 +911,7 @@ const CookieSection = () => {
 };
 
 /* =========================================================
-   Layout (reveal) + Scroll Restore + Favicon/Title
+   Layout (reveal) + Scroll Restore + Favicon/Title + Viewport
 ========================================================= */
 function Layout({ children }: { children: React.ReactNode }) {
   const loc = useLocation();
@@ -893,17 +934,18 @@ function Layout({ children }: { children: React.ReactNode }) {
       { threshold: 0.12, rootMargin: "0px 0px -10% 0px" }
     );
     els.forEach((el, idx) => {
-      el.style.transitionDelay = `${Math.min(idx * 40, 280)}ms`;
+      el.style.transitionDelay = `${Math.min(idx * 40, 240)}ms`;
       io.observe(el);
     });
     return () => io.disconnect();
   }, [loc.pathname]);
 
   React.useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    // route değişince başa
+    window.scrollTo({ top: 0, behavior: "auto" });
   }, [loc.pathname]);
 
-  // Sekme başlığı ve favicon
+  // Head düzenlemeleri: title, favicon, viewport
   React.useEffect(() => {
     document.title = t("nav.brand");
     const setFavicon = (href: string) => {
@@ -915,14 +957,21 @@ function Layout({ children }: { children: React.ReactNode }) {
       }
       link.href = href;
     };
-    // Önce PNG varsa onu dene, yoksa logo.jpg
     setFavicon("/images/logo-64.png");
     setTimeout(() => {
       const testImg = new Image();
-      testImg.onload = () => {}; // png varsa sorun yok
       testImg.onerror = () => setFavicon("/images/logo.jpg");
       testImg.src = "/images/logo-64.png";
     }, 0);
+
+    // Mobile viewport (özellikle iOS için)
+    let vp = document.querySelector<HTMLMetaElement>('meta[name="viewport"]');
+    if (!vp) {
+      vp = document.createElement("meta");
+      vp.name = "viewport";
+      document.head.appendChild(vp);
+    }
+    vp.content = "width=device-width,initial-scale=1,viewport-fit=cover";
   }, [t]);
 
   return (
@@ -936,7 +985,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         style={{
           background: "#0f172a",
           borderTop: "1px solid #1f2937",
-          padding: "24px 0",
+          padding: "24px 0 calc(24px + env(safe-area-inset-bottom))",
           color: "#9aa7b8",
         }}
       >
@@ -992,7 +1041,7 @@ const Home = () => {
         }}
       >
         <div style={{ maxWidth: 1472, margin: "0 auto", padding: "24px 16px 40px", width: "100%" }}>
-          <div style={{ display: "grid", gap: 28, gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", alignItems: "start" }}>
+          <div style={{ display: "grid", gap: 28, gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", alignItems: "start" }}>
             <div>
               <div className="featureCard reveal" style={{ display: "inline-flex", gap: 8, alignItems: "center", padding: "6px 12px" }}>
                 <span className="chip"><ShieldCheck size={14} /> {t("hero.badge")}</span>
@@ -1017,6 +1066,7 @@ const Home = () => {
                     color: "#e5e7eb",
                     textDecoration: "none",
                   }}
+                  aria-label={t("nav.career")}
                 >
                   {t("cta.apply")}
                 </a>
@@ -1050,7 +1100,7 @@ const Home = () => {
 
           {/* KPI — responsive */}
           <div className="reveal" style={{ marginTop: 28 }}>
-            <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
+            <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))" }}>
               <div className="kpi featureCard"><strong>%96</strong><span>{t("kpi.satisfaction")}</span></div>
               <div className="kpi featureCard"><strong>50.000+</strong><span>{t("kpi.activations")}</span></div>
               <div className="kpi featureCard"><strong>3 {t("kpi.offices.count")}</strong><span>2 {t("kpi.offices")}</span></div>
@@ -1080,15 +1130,33 @@ const Home = () => {
 
           <div className="reveal">
             <div className="featureCard fc-plain" style={{ borderRadius: 16, overflow: "hidden" }}>
-              <img src="/images/kadinlar.jpg" alt="Team" style={{ width: "100%", height: 220, objectFit: "cover", display: "block" }} />
+              <img
+                src="/images/kadinlar.jpg"
+                alt="Team"
+                style={{ width: "100%", height: "clamp(180px, 40vw, 220px)", objectFit: "cover", display: "block" }}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
 
             <div className="reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16 }}>
               <div className="featureCard fc-plain" style={{ borderRadius: 16, overflow: "hidden" }}>
-                <img src="/images/kadin.jpg" alt="Agent" style={{ width: "100%", height: 250, objectFit: "cover", display: "block" }} />
+                <img
+                  src="/images/kadin.jpg"
+                  alt="Agent"
+                  style={{ width: "100%", height: "clamp(180px, 45vw, 250px)", objectFit: "cover", display: "block" }}
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <div className="featureCard fc-plain" style={{ borderRadius: 16, overflow: "hidden" }}>
-                <img src="/images/ofis.jpg" alt="Office" style={{ width: "100%", height: 250, objectFit: "cover", display: "block" }} />
+                <img
+                  src="/images/ofis.jpg"
+                  alt="Office"
+                  style={{ width: "100%", height: "clamp(180px, 45vw, 250px)", objectFit: "cover", display: "block" }}
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
           </div>
@@ -1130,7 +1198,7 @@ const Home = () => {
           style={{
             display: "grid",
             gap: 18,
-            gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
+            gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
           }}
         >
           {[
@@ -1223,13 +1291,19 @@ const Kariyer = () => {
     ].filter(Boolean).join("\n");
   };
 
+  const openGmailCompose = (subject: string, body: string) => {
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoUrl = `mailto:${encodeURIComponent(HR_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // Mobilde Gmail yoksa mailto fallback
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    window.open(isMobile ? mailtoUrl : gmailUrl, "_blank");
+  };
+
   const sendGmail = (e: React.MouseEvent) => {
     e.preventDefault();
     if (!kvkk) { alert(t("career.err.kvkk")); return; }
-    const su = encodeURIComponent(I18N[lang]["msg.subject"] ?? I18N.tr["msg.subject"]);
-    const body = encodeURIComponent(buildText());
-    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}&su=${su}&body=${body}`;
-    window.open(url, "_blank");
+    const su = I18N[lang]["msg.subject"] ?? I18N.tr["msg.subject"];
+    openGmailCompose(su, buildText());
   };
 
   const sendWhatsApp = (e: React.MouseEvent) => {
@@ -1284,8 +1358,8 @@ const Kariyer = () => {
           >
             <form style={{ display: "grid", gap: 14 }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <input placeholder={t("career.email.ph")} style={inputStyle} value={email} onChange={e => setEmail(e.target.value)} />
-                <input placeholder={t("career.phone.ph")} style={inputStyle} value={phone} onChange={e => setPhone(e.target.value)} />
+                <input placeholder={t("career.email.ph")} style={inputStyle} value={email} onChange={e => setEmail(e.target.value)} inputMode="email" />
+                <input placeholder={t("career.phone.ph")} style={inputStyle} value={phone} onChange={e => setPhone(e.target.value)} inputMode="tel" />
               </div>
 
               {/* Ülke → Şehir */}
