@@ -616,12 +616,13 @@ const GlobalReset = () => (
 
     .copy-wide { max-width: 1000px; line-height: 1.8; font-size: clamp(15.5px, 2.2vw, 19px); margin: 0 auto; text-align: center; }
     .copy-wide p { margin: 0 0 16px; }
-    @media (max-width: 900px){ #hakkimizda > div { grid-template-columns: 1fr !important; } }
+
+    /* Biz Kimiz – mobil: görseli gizle, yazıyı ortala (fonta dokunma) */
     @media (max-width: 900px){
-      #hakkimizda .copy { text-align:center !important; margin-left:auto; margin-right:auto; }
+      #hakkimizda > div { grid-template-columns: 1fr !important; }
       #hakkimizda .about-media { display:none !important; }
+      #hakkimizda .copy { text-align:center !important; margin: 0 auto !important; }
     }
-    @media (max-width: 640px){ .copy-wide { max-width: 100%; text-align: left; } }
 
     @media (prefers-reduced-motion: no-preference) {
       .reveal { opacity: 0; transform: translateY(12px) scale(.98); }
@@ -642,7 +643,8 @@ const GlobalReset = () => (
 
     .fc-plain{ padding:0 !important; border:0 !important; background:transparent !important; box-shadow:none !important; }
 
-    /* Select görünürlüğü */
+    /* (Bu kısmı sen zaten hallettim dedin, olduğu gibi bıraktım)
+       Select görünürlüğü */
     select { background:#ffffff !important; color:#111827 !important; }
     select option { color:#111827; }
 
@@ -662,27 +664,30 @@ const GlobalReset = () => (
 
     /* ======= Mobile tweaks ======= */
     @media (max-width: 900px){
-      /* 6. madde: mobilde scroll-snap'i kapat */
+      /* 6: mobilde scroll-snap kapalı */
       html { scroll-snap-type: none; }
 
       .nav-links { display:none; }
       .hamburger { display:inline-flex; }
 
-      /* Menü: sayfanın neresinde tıklanırsa orada açılan tam ekran overlay */
+      /* Menü: fixed overlay — bulunduğun yerde açılır, kaydırılabilir */
       .mobileMenu {
-        position: fixed; /* önce absolute idi */
+        position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
-        z-index: 40;
+        z-index: 999;
         background: rgba(15,23,42,.98);
         backdrop-filter: blur(6px);
         border-bottom:1px solid #1f2937;
         box-shadow: 0 12px 28px rgba(0,0,0,.35);
-        padding: calc(72px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+        padding: calc(72px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
         display:flex; flex-direction:column; gap:14px;
         overflow:auto;
       }
       .mobileMenu a, .mobileMenu .lang-plain { padding:12px 10px; border-radius:10px; border:1px solid #233146; }
       .brand-title { display:none; }
+
+      /* Kariyer: tek sütun */
+      .career-grid { grid-template-columns: 1fr !important; }
     }
   `}</style>
 );
@@ -787,13 +792,11 @@ const Navbar = () => {
 
   // Menu açıkken body scroll'u kilitle
   React.useEffect(() => {
-    const prev = document.body.style.overflow;
     if (open) {
+      const prev = document.body.style.overflow;
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = prev || "";
+      return () => { document.body.style.overflow = prev; };
     }
-    return () => { document.body.style.overflow = prev; };
   }, [open]);
 
   const onHamburgerKey = (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -1146,7 +1149,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Mobilde gizlenecek medya sütunu */}
+          {/* mobilde gizlenecek görseller için class eklendi */}
           <div className="reveal about-media">
             <div className="featureCard fc-plain" style={{ borderRadius: 16, overflow: "hidden" }}>
               <img
@@ -1261,7 +1264,7 @@ const LANG_OPTIONS = ["Fransızca", "Almanca", "İngilizce", "Türkçe"] as cons
 
 const TR_CITIES = ["Adana","Adıyaman","Afyonkarahisar","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
 const CH_CITIES = ["Aarau","Baden","Baar","Basel","Bern","Biel/Bienne","Carouge","Chur","Dietikon","Emmen","Frauenfeld","Fribourg","Geneve","Genève","Köniz","Kriens","La Chaux-de-Fonds","Lausanne","Lugano","Luzern","Montreux","Meyrin","Neuchâtel","Rapperswil-Jona","Sion","Schaffhausen","St. Gallen","Thun","Uster","Vernier","Wädenswil","Wetzikon","Wil","Winterthur","Yverdon-les-Bains","Zug","Zürich"];
-const DE_CITIES = ["Aachen","Augsburg","Berlin","Bielefeld","Bochum","Bonn","Braunschweig","Bremen","Chemnitz","Dortmund","Dresden","Duisburg","Düsseldorf","Essen","Frankfurt am Main","Freiburg im Breisgau","Gelsenkirchen","Hagen","Hamburg","Hannover","Heidelberg","Herne","Karlsruhe","Kassel","Kiel","Köln","Krefeld","Leipzig","Leverkusen","Lübeck","Magdeburg","Mainz","Mannheim","Mönchengladbach","München","Münster","Nürnberg","Oberhausen","Oldenburg","Osnabrück","Potsdam","Rostock","Saarbrücken","Solingen","Stuttgart","Wiesbaden"];
+const DE_CITIES = ["Aachen","Augsburg","Berlin","Bielefeld","Bochum","Bonn","Braunschweig","Bremen","Chemnitz","Dortmund","Dresden","Duisburg","Düsseldorf","Essen","Frankfurt am Main","Freiburg im Breisgau","Gelsenkirchen","Hagen","Hamburg","Hannover","Heidelberg","Herne","Karlsruhe","Kassel","Kiel","Köln","Krefeld","Leipzig","Leverkusen","Lübeck","Magdeburg","Mainz","Mannheim","Mönchengladbach","München","Münster","Nürnberg","Oberhausen","Oldenburg","Osnabrück","Potsdam","Rostock","Saarbrücken","Solingen","Stuttgart","Wiesbaden","Wuppertal"];
 const FR_CITIES = ["Aix-en-Provence","Amiens","Angers","Annecy","Argenteuil","Avignon","Bordeaux","Boulogne-Billancourt","Brest","Caen","Clermont-Ferrand","Dijon","Grenoble","Le Havre","Lille","Limoges","Lyon","Marseille","Metz","Montpellier","Montreuil","Mulhouse","Nancy","Nantes","Nice","Nîmes","Orléans","Paris","Perpignan","Poitiers","Reims","Rennes","Rouen","Saint-Denis","Saint-Étienne","Strasbourg","Toulon","Toulouse","Tours","Villeurbanne"];
 const MA_CITIES = ["Agadir","Al Hoceïma","Béni Mellal","Berkane","Casablanca","Dakhla","El Jadida","Errachidia","Fès","Guelmim","Kénitra","Khémisset","Khouribga","Ksar El-Kébir","Larache","Laâyoune","Marrakech","Meknès","Mohammédia","Nador","Ouarzazate","Oujda","Rabat","Safi","Settat","Taroudant","Taza","Témara","Tétouan","Tanger"];
 
@@ -1313,7 +1316,6 @@ const Kariyer = () => {
   const openGmailCompose = (subject: string, body: string) => {
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     const mailtoUrl = `mailto:${encodeURIComponent(HR_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    // Mobilde Gmail yoksa mailto fallback
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     window.open(isMobile ? mailtoUrl : gmailUrl, "_blank");
   };
@@ -1371,7 +1373,8 @@ const Kariyer = () => {
           {t("career.lead")}
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1.1fr .9fr", gap: 24 }}>
+        {/* className eklendi: mobilde tek sütun */}
+        <div className="career-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr .9fr", gap: 24 }}>
           <div
             style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20 }}
           >
