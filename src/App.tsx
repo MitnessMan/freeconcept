@@ -114,7 +114,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     "msg.sent": "(Gönderim: web formu)"
   },
 
-  /* --------- DE (kurumsal düzenlemelerle) --------- */
+  /* --------- DE --------- */
   de: {
     "nav.home": "Startseite",
     "nav.about": "Wer sind wir?",
@@ -208,7 +208,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     "msg.sent": "(Versand: Web-Formular)"
   },
 
-  /* --------- FR (kurumsal düzenlemelerle) --------- */
+  /* --------- FR --------- */
   fr: {
     "nav.home": "Accueil",
     "nav.about": "Qui sommes-nous ?",
@@ -302,7 +302,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     "msg.sent": "(Envoi : formulaire web)"
   },
 
-  /* --------- EN (kurumsal düzenlemelerle) --------- */
+  /* --------- EN --------- */
   en: {
     "nav.home": "Home",
     "nav.about": "About",
@@ -549,18 +549,13 @@ function PartnerLogo({
 }
 
 /* =========================================================
-   Global Stil
+   Global Stil (+ responsive navbar)
 ========================================================= */
 const GlobalReset = () => (
   <style>{`
     *, *::before, *::after { box-sizing: border-box; }
     html, body, #root { width: 100%; }
-    html {
-      scroll-behavior: smooth;
-      overflow-y: scroll; overflow-x: hidden;
-      scroll-snap-type: y proximity;
-      scroll-padding-top: 72px;
-    }
+    html { scroll-behavior: smooth; overflow-y: scroll; overflow-x: hidden; scroll-snap-type: y proximity; scroll-padding-top: 72px; }
     #root { max-width: none !important; padding: 0 !important; margin: 0 !important; min-height: 100%; }
     img, svg { max-width: 100%; height: auto; display: inline-block; }
     body { background: #0f172a; color:#e5e7eb; margin:0; overflow: visible; }
@@ -577,76 +572,38 @@ const GlobalReset = () => (
 
     /* —— Premium Card —— */
     .featureCard{
-      position:relative;
-      border-radius:16px;
-      padding:18px 18px 20px;
-      background:
-        linear-gradient(180deg, rgba(17,24,39,.9), rgba(15,23,42,.9)) border-box;
+      position:relative; border-radius:16px; padding:18px 18px 20px;
+      background: linear-gradient(180deg, rgba(17,24,39,.9), rgba(15,23,42,.9)) border-box;
       border:1px solid rgba(148,163,184,.16);
       box-shadow: 0 10px 28px rgba(0,0,0,.24);
       overflow:hidden;
       transition: transform .18s ease, box-shadow .22s ease, border-color .22s ease, filter .22s ease;
-      backdrop-filter: blur(6px);
-      will-change: transform;
+      backdrop-filter: blur(6px); will-change: transform;
     }
-    .featureCard::before{
-      content:"";
-      position:absolute; inset:-1px;
-      border-radius:16px;
-      background: conic-gradient(from 180deg at 50% 50%,
-        rgba(80,125,255,.45),
-        rgba(25,211,174,.35),
-        rgba(99,102,241,.55),
-        rgba(80,125,255,.45));
-      filter: blur(18px);
-      opacity:.20;
-      z-index:0;
-    }
-    .featureCard::after{
-      content:"";
-      position:absolute; top:-60%; left:-30%;
-      width:60%; height:220%;
-      transform: rotate(18deg);
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
-      opacity:0; pointer-events:none;
-      transition: opacity .25s ease, transform .25s ease;
-    }
-    .featureCard:hover{
-      transform: translateY(-4px);
-      box-shadow: 0 22px 46px rgba(0,0,0,.32);
-      border-color: rgba(148,163,184,.28);
-      filter: saturate(1.02);
-    }
+    .featureCard::before{ content:""; position:absolute; inset:-1px; border-radius:16px;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(80,125,255,.45), rgba(25,211,174,.35), rgba(99,102,241,.55), rgba(80,125,255,.45));
+      filter: blur(18px); opacity:.20; z-index:0; }
+    .featureCard::after{ content:""; position:absolute; top:-60%; left:-30%; width:60%; height:220%;
+      transform: rotate(18deg); background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+      opacity:0; pointer-events:none; transition: opacity .25s ease, transform .25s ease; }
+    .featureCard:hover{ transform: translateY(-4px); box-shadow: 0 22px 46px rgba(0,0,0,.32); border-color: rgba(148,163,184,.28); filter: saturate(1.02); }
     .featureCard:hover::after{ opacity:1; transform: translateX(40%) rotate(18deg); }
 
     .fc-row { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; position:relative; z-index:1; }
-    .chip {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px; border-radius:999px;
-      background: rgba(148,163,184,.12);
-      border:1px solid rgba(148,163,184,.22);
-      font-size:12px; color:#cbd5e1;
-    }
+    .chip { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background: rgba(148,163,184,.12); border:1px solid rgba(148,163,184,.22); font-size:12px; color:#cbd5e1; }
     .fc-title { margin-top:8px; font-weight:800; font-size:20px; color:#fff; }
     .fc-desc  { margin-top:6px; opacity:.9; }
 
     .partnerCard {
       position: relative;
       background: radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0) 60%), linear-gradient(180deg,#1f2937 0%, #111827 100%);
-      border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 24px;
-      text-align: center;
-      transition: box-shadow .22s ease, transform .18s ease, border-color .18s ease;
-      will-change: transform;
-      box-shadow: 0 10px 28px rgba(0,0,0,.24);
-      background-clip: padding-box;
+      border: 1px solid #334155; border-radius: 16px; padding: 24px; text-align: center;
+      transition: box-shadow .22s ease, transform .18s ease, border-color .18s ease; will-change: transform;
+      box-shadow: 0 10px 28px rgba(0,0,0,.24); background-clip: padding-box;
     }
     .partnerCard:hover { transform: translateY(-3px); box-shadow: 0 22px 40px rgba(0,0,0,.32); border-color:#3b4758; }
 
-    .navlink {
-      color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: .3px; opacity: .92; transition: opacity .16s ease;
-    }
+    .navlink { color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: .3px; opacity: .92; transition: opacity .16s ease; }
     .navlink:hover { opacity: 1; }
 
     .sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
@@ -657,55 +614,23 @@ const GlobalReset = () => (
     .copy-wide { max-width: 1000px; line-height: 1.8; font-size: 19px; margin: 0 auto; text-align: center; }
     .copy-wide p { margin: 0 0 16px; }
     @media (max-width: 900px){ #hakkimizda > div { grid-template-columns: 1fr !important; } }
-    @media (max-width: 640px){
-      .copy-wide { max-width: 100%; font-size: 16.5px; text-align: left; }
-    }
+    @media (max-width: 640px){ .copy-wide { max-width: 100%; font-size: 16.5px; text-align: left; } }
 
     @media (prefers-reduced-motion: no-preference) {
       .reveal { opacity: 0; transform: translateY(12px) scale(.98); }
       .reveal.in { opacity: 1; transform: translateY(0) scale(1); transition: opacity .6s ease, transform .6s ease; }
     }
 
-    /* Dil menüsü */
-    .lang { position: relative; }
-    .lang-plain {
-      background: transparent; border: 0; padding: 0; margin: 0;
-      color: #ffffff; font-weight: 700; letter-spacing: .3px; cursor: pointer;
-      display:inline-flex; align-items:center; gap:6px; opacity:.92;
-    }
-    .lang-plain:hover { opacity: 1; }
-    .lang-list {
-      position:absolute; right:0; top:110%;
-      background:#0b1220; border:1px solid #233146; border-radius:12px;
-      box-shadow:0 16px 36px rgba(0,0,0,.35);
-      padding:6px; min-width:160px; z-index:50;
-    }
-    .lang-item {
-      width:100%; text-align:left; padding:10px 12px; border-radius:8px; border:0; cursor:pointer;
-      background:transparent; color:#e5e7eb; font-weight:600;
-    }
-    .lang-item:hover{ background:#121b2e; }
-
-    .badge {
-      display:inline-flex; align-items:center; gap:6px;
-      padding:6px 10px; border-radius:999px; border:1px solid #334155;
-      background:#151d2e; color:#cbd5e1; font-size:12px; margin-right:8px;
-    }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid #334155; background:#151d2e; color:#cbd5e1; font-size:12px; margin-right:8px; }
 
     .kpi {
-      border-radius:16px; padding:36px; background:
-        radial-gradient(120% 120% at 20% 0%, rgba(99,102,241,.12), transparent 50%),
-        linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
-      border:1px solid #233146;
-      display:flex; align-items:center; justify-content:center; flex-direction:column;
+      border-radius:16px; padding:36px;
+      background: radial-gradient(120% 120% at 20% 0%, rgba(99,102,241,.12), transparent 50%), linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
+      border:1px solid #233146; display:flex; align-items:center; justify-content:center; flex-direction:column;
       min-height:200px; position:relative; overflow:hidden;
     }
-    .kpi::after{
-      content:""; position:absolute; inset:-2px; border-radius:16px;
-      background: radial-gradient(60% 60% at 50% -10%, rgba(148,163,184,.18), transparent 60%);
-      opacity:.4; pointer-events:none;
-    }
-    .kpi strong { font-size:64px; line-height:1; letter-spacing:.3px; color:#fff; }
+    .kpi::after{ content:""; position:absolute; inset:-2px; border-radius:16px; background: radial-gradient(60% 60% at 50% -10%, rgba(148,163,184,.18), transparent 60%); opacity:.4; pointer-events:none; }
+    .kpi strong { line-height:1; letter-spacing:.3px; color:#fff; font-size: clamp(28px, 7vw, 64px); }
     .kpi span { opacity:.95; margin-top:12px; font-size:18px; color:#fff; }
 
     .fc-plain{ padding:0 !important; border:0 !important; background:transparent !important; box-shadow:none !important; }
@@ -713,6 +638,25 @@ const GlobalReset = () => (
     /* Select görünürlüğü */
     select { background:#ffffff !important; color:#111827 !important; }
     select option { color:#111827; }
+
+    /* ======= Responsive Navbar ======= */
+    .nav-wrap { position: relative; }
+    .nav-links { display:flex; align-items:center; gap:24px; margin-left:auto; }
+    .hamburger { display:none; border:0; background:transparent; color:#fff; padding:8px; border-radius:10px; }
+    .hamburger:focus { outline:2px solid #334155; outline-offset:2px; }
+
+    @media (max-width: 900px){
+      .nav-links { display:none; }
+      .hamburger { display:inline-flex; }
+      .mobileMenu {
+        position:absolute; top:72px; left:0; right:0; z-index:40;
+        background: rgba(15,23,42,.98); backdrop-filter: blur(6px);
+        border-bottom:1px solid #1f2937; box-shadow: 0 12px 28px rgba(0,0,0,.35);
+        padding:12px 16px; display:flex; flex-direction:column; gap:14px;
+      }
+      .mobileMenu a { padding:10px 4px; border-radius:8px; }
+      .brand-title { display:none; } /* başlık sığmıyorsa gizle */
+    }
   `}</style>
 );
 
@@ -769,11 +713,15 @@ function LanguageDropdown() {
 }
 
 /* =========================================================
-   Navbar (logo büyütüldü ve contain yapıldı)
+   Navbar (mobil menü eklendi)
 ========================================================= */
 const Navbar = () => {
+  const [open, setOpen] = React.useState(false);
+  const { t } = useT();
+
   const go = (e: React.MouseEvent, href: string, sectionId?: string) => {
     e.preventDefault();
+    setOpen(false);
     if (href === "#/") {
       window.location.hash = "/";
       requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
@@ -782,7 +730,16 @@ const Navbar = () => {
     }
     window.location.hash = href.replace("#", "");
   };
-  const { t } = useT();
+
+  // mobilde dışarı tıklayınca kapat
+  React.useEffect(() => {
+    const close = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("header")) setOpen(false);
+    };
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, []);
 
   return (
     <header
@@ -796,6 +753,7 @@ const Navbar = () => {
       }}
     >
       <nav
+        className="nav-wrap"
         style={{
           maxWidth: 1472,
           margin: "0 auto",
@@ -805,10 +763,10 @@ const Navbar = () => {
           justifyContent: "space-between",
           padding: "0 16px",
           gap: 16,
+          position: "relative"
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          {/* Daire içi logo (44px) */}
           <div
             style={{
               width: 44, height: 44, borderRadius: "50%", overflow: "hidden",
@@ -824,15 +782,13 @@ const Navbar = () => {
               style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
             />
           </div>
-          <div
-            style={{ fontSize: 20, fontWeight: 800, letterSpacing: ".4px", whiteSpace: "nowrap" }}
-            title={t("nav.brand")}
-          >
+          <div className="brand-title" style={{ fontSize: 20, fontWeight: 800, letterSpacing: ".4px", whiteSpace: "nowrap" }}>
             {t("nav.brand")}
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 24, marginLeft: "auto" }}>
+        {/* Desktop links */}
+        <div className="nav-links">
           <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
           <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("hakkimizda"), 80); }}>{t("nav.about")}</a>
           <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("hedefimiz"), 80); }}>{t("nav.mission")}</a>
@@ -840,6 +796,26 @@ const Navbar = () => {
           <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
           <LanguageDropdown />
         </div>
+
+        {/* Mobile button */}
+        <button className="hamburger" aria-label="Menüyü aç/kapat" onClick={() => setOpen(o => !o)}>
+          {/* basit hamburger */}
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </button>
+
+        {/* Mobile panel */}
+        {open && (
+          <div className="mobileMenu">
+            <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
+            <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("hakkimizda"), 80); }}>{t("nav.about")}</a>
+            <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("hedefimiz"), 80); }}>{t("nav.mission")}</a>
+            <a className="navlink" href="#/" onClick={(e) => { go(e, "#/"); setTimeout(() => scrollToId("partnerler"), 80); }}>{t("nav.partners")}</a>
+            <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
+            <LanguageDropdown />
+          </div>
+        )}
       </nav>
     </header>
   );
@@ -849,7 +825,6 @@ const Navbar = () => {
    İletişim (ARTIK KULLANILMIYOR – istek üzerine kaldırıldı)
 ========================================================= */
 const CONTACT_EMAIL = "info@freeconcept.com.tr";
-// ContactSection component durabilir ama kullanılmıyor.
 
 /* =========================================================
    Cookie
@@ -895,10 +870,11 @@ const CookieSection = () => {
 };
 
 /* =========================================================
-   Layout (reveal) + Scroll Restore
+   Layout (reveal) + Scroll Restore + Favicon/Title
 ========================================================= */
 function Layout({ children }: { children: React.ReactNode }) {
   const loc = useLocation();
+  const { t } = useT();
 
   React.useEffect(() => {
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
@@ -927,14 +903,33 @@ function Layout({ children }: { children: React.ReactNode }) {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, [loc.pathname]);
 
-  const { t } = useT();
+  // Sekme başlığı ve favicon
+  React.useEffect(() => {
+    document.title = t("nav.brand");
+    const setFavicon = (href: string) => {
+      let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "icon";
+        document.head.appendChild(link);
+      }
+      link.href = href;
+    };
+    // Önce PNG varsa onu dene, yoksa logo.jpg
+    setFavicon("/images/logo-64.png");
+    setTimeout(() => {
+      const testImg = new Image();
+      testImg.onload = () => {}; // png varsa sorun yok
+      testImg.onerror = () => setFavicon("/images/logo.jpg");
+      testImg.src = "/images/logo-64.png";
+    }, 0);
+  }, [t]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f172a" }}>
       <GlobalReset />
       <Navbar />
       {children}
-      {/* İSTEK ÜZERİNE: Ana sayfadaki İletişim bölümü kaldırıldı. Sadece çerez satırı gösteriliyor. */}
       <CookieSection />
       <footer
         className="reveal"
@@ -984,7 +979,7 @@ const Home = () => {
 
   return (
     <>
-      {/* HERO — üst boşluk azaltıldı */}
+      {/* HERO */}
       <section
         id="hero"
         className="reveal"
@@ -1002,10 +997,10 @@ const Home = () => {
               <div className="featureCard reveal" style={{ display: "inline-flex", gap: 8, alignItems: "center", padding: "6px 12px" }}>
                 <span className="chip"><ShieldCheck size={14} /> {t("hero.badge")}</span>
               </div>
-              <h1 style={{ marginTop: 12, fontSize: 64, fontWeight: 900, lineHeight: 1.15, color: "#fff" }}>
+              <h1 style={{ marginTop: 12, fontSize: "clamp(28px, 7vw, 64px)", fontWeight: 900, lineHeight: 1.15, color: "#fff" }}>
                 {t("hero.title")}
               </h1>
-              <p className="reveal" style={{ marginTop: 12, fontSize: 20, opacity: 0.9 }}>
+              <p className="reveal" style={{ marginTop: 12, fontSize: "clamp(15px, 2.6vw, 20px)", opacity: 0.9 }}>
                 {t("hero.lead")}
               </p>
 
@@ -1053,9 +1048,9 @@ const Home = () => {
             </div>
           </div>
 
-          {/* KPI — geniş */}
+          {/* KPI — responsive */}
           <div className="reveal" style={{ marginTop: 28 }}>
-            <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(3, 1fr)" }}>
+            <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
               <div className="kpi featureCard"><strong>%96</strong><span>{t("kpi.satisfaction")}</span></div>
               <div className="kpi featureCard"><strong>50.000+</strong><span>{t("kpi.activations")}</span></div>
               <div className="kpi featureCard"><strong>3 {t("kpi.offices.count")}</strong><span>2 {t("kpi.offices")}</span></div>
@@ -1135,7 +1130,7 @@ const Home = () => {
           style={{
             display: "grid",
             gap: 18,
-            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
+            gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
           }}
         >
           {[
@@ -1171,18 +1166,17 @@ const Home = () => {
 };
 
 /* =========================================================
-   Kariyer Sayfası (Form) — i18n mesaj metni
+   Kariyer Sayfası (Form)
 ========================================================= */
 const HR_EMAIL = "buzdevri330133@gmail.com";
 const WHATSAPP_NUMBER_INTL = "905394297969";
 const LANG_OPTIONS = ["Fransızca", "Almanca", "İngilizce", "Türkçe"] as const;
 
-// Türkiye 81 il + bazı ülkeler
-const TR_CITIES = ["Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli", "Diyarbakır", "Edirne", "Elazığ", "Erzincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari", "Hatay", "Isparta", "Mersin", "İstanbul", "İzmir", "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir", "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir", "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat", "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman", "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"];
-const CH_CITIES = ["Aarau", "Baden", "Baar", "Basel", "Bern", "Biel/Bienne", "Carouge", "Chur", "Dietikon", "Emmen", "Frauenfeld", "Fribourg", "Geneve", "Genève", "Köniz", "Kriens", "La Chaux-de-Fonds", "Lausanne", "Lugano", "Luzern", "Montreux", "Meyrin", "Neuchâtel", "Rapperswil-Jona", "Sion", "Schaffhausen", "St. Gallen", "Thun", "Uster", "Vernier", "Wädenswil", "Wetzikon", "Wil", "Winterthur", "Yverdon-les-Bains", "Zug", "Zürich"];
-const DE_CITIES = ["Aachen", "Augsburg", "Berlin", "Bielefeld", "Bochum", "Bonn", "Braunschweig", "Bremen", "Chemnitz", "Dortmund", "Dresden", "Duisburg", "Düsseldorf", "Essen", "Frankfurt am Main", "Freiburg im Breisgau", "Gelsenkirchen", "Hagen", "Hamburg", "Hannover", "Heidelberg", "Herne", "Karlsruhe", "Kassel", "Kiel", "Köln", "Krefeld", "Leipzig", "Leverkusen", "Lübeck", "Magdeburg", "Mainz", "Mannheim", "Mönchengladbach", "München", "Münster", "Nürnberg", "Oberhausen", "Oldenburg", "Osnabrück", "Potsdam", "Rostock", "Saarbrücken", "Solingen", "Stuttgart", "Wiesbaden", "Wuppertal"];
-const FR_CITIES = ["Aix-en-Provence", "Amiens", "Angers", "Annecy", "Argenteuil", "Avignon", "Bordeaux", "Boulogne-Billancourt", "Brest", "Caen", "Clermont-Ferrand", "Dijon", "Grenoble", "Le Havre", "Lille", "Limoges", "Lyon", "Marseille", "Metz", "Montpellier", "Montreuil", "Mulhouse", "Nancy", "Nantes", "Nice", "Nîmes", "Orléans", "Paris", "Perpignan", "Poitiers", "Reims", "Rennes", "Rouen", "Saint-Denis", "Saint-Étienne", "Strasbourg", "Toulon", "Toulouse", "Tours", "Villeurbanne"];
-const MA_CITIES = ["Agadir", "Al Hoceïma", "Béni Mellal", "Berkane", "Casablanca", "Dakhla", "El Jadida", "Errachidia", "Fès", "Guelmim", "Kénitra", "Khémisset", "Khouribga", "Ksar El-Kébir", "Larache", "Laâyoune", "Marrakech", "Meknès", "Mohammédia", "Nador", "Ouarzazate", "Oujda", "Rabat", "Safi", "Settat", "Taroudant", "Taza", "Témara", "Tétouan", "Tanger"];
+const TR_CITIES = ["Adana","Adıyaman","Afyonkarahisar","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
+const CH_CITIES = ["Aarau","Baden","Baar","Basel","Bern","Biel/Bienne","Carouge","Chur","Dietikon","Emmen","Frauenfeld","Fribourg","Geneve","Genève","Köniz","Kriens","La Chaux-de-Fonds","Lausanne","Lugano","Luzern","Montreux","Meyrin","Neuchâtel","Rapperswil-Jona","Sion","Schaffhausen","St. Gallen","Thun","Uster","Vernier","Wädenswil","Wetzikon","Wil","Winterthur","Yverdon-les-Bains","Zug","Zürich"];
+const DE_CITIES = ["Aachen","Augsburg","Berlin","Bielefeld","Bochum","Bonn","Braunschweig","Bremen","Chemnitz","Dortmund","Dresden","Duisburg","Düsseldorf","Essen","Frankfurt am Main","Freiburg im Breisgau","Gelsenkirchen","Hagen","Hamburg","Hannover","Heidelberg","Herne","Karlsruhe","Kassel","Kiel","Köln","Krefeld","Leipzig","Leverkusen","Lübeck","Magdeburg","Mainz","Mannheim","Mönchengladbach","München","Münster","Nürnberg","Oberhausen","Oldenburg","Osnabrück","Potsdam","Rostock","Saarbrücken","Solingen","Stuttgart","Wiesbaden","Wuppertal"];
+const FR_CITIES = ["Aix-en-Provence","Amiens","Angers","Annecy","Argenteuil","Avignon","Bordeaux","Boulogne-Billancourt","Brest","Caen","Clermont-Ferrand","Dijon","Grenoble","Le Havre","Lille","Limoges","Lyon","Marseille","Metz","Montpellier","Montreuil","Mulhouse","Nancy","Nantes","Nice","Nîmes","Orléans","Paris","Perpignan","Poitiers","Reims","Rennes","Rouen","Saint-Denis","Saint-Étienne","Strasbourg","Toulon","Toulouse","Tours","Villeurbanne"];
+const MA_CITIES = ["Agadir","Al Hoceïma","Béni Mellal","Berkane","Casablanca","Dakhla","El Jadida","Errachidia","Fès","Guelmim","Kénitra","Khémisset","Khouribga","Ksar El-Kébir","Larache","Laâyoune","Marrakech","Meknès","Mohammédia","Nador","Ouarzazate","Oujda","Rabat","Safi","Settat","Taroudant","Taza","Témara","Tétouan","Tanger"];
 
 const COUNTRY_CITY: Record<string, string[]> = {
   "Türkiye": TR_CITIES,
@@ -1208,7 +1202,6 @@ const Kariyer = () => {
   const toggleLang = (l: string) =>
     setLangs((prev) => (prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]));
 
-  // Seçili dile göre mesaj metnini kur
   const buildText = () => {
     const L = (k: string) => I18N[lang][k] ?? I18N.tr[k] ?? k;
     const langText = langs.length ? langs.join(", ") : "—";
@@ -1230,7 +1223,6 @@ const Kariyer = () => {
     ].filter(Boolean).join("\n");
   };
 
-  // Gmail compose
   const sendGmail = (e: React.MouseEvent) => {
     e.preventDefault();
     if (!kvkk) { alert(t("career.err.kvkk")); return; }
@@ -1288,12 +1280,7 @@ const Kariyer = () => {
 
         <div style={{ display: "grid", gridTemplateColumns: "1.1fr .9fr", gap: 24 }}>
           <div
-            style={{
-              background: "#0f172a",
-              border: "1px solid #233146",
-              borderRadius: 16,
-              padding: 20,
-            }}
+            style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20 }}
           >
             <form style={{ display: "grid", gap: 14 }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -1301,25 +1288,20 @@ const Kariyer = () => {
                 <input placeholder={t("career.phone.ph")} style={inputStyle} value={phone} onChange={e => setPhone(e.target.value)} />
               </div>
 
-              {/* Ülke → Şehir bağlı seçim */}
+              {/* Ülke → Şehir */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <select value={country} onChange={(e) => onCountryChange(e.target.value)} style={selectStyle}>
                   <option value="">{t("career.country")}</option>
-                  {Object.keys(COUNTRY_CITY)
-                    .sort((a, b) => a.localeCompare(b, "tr"))
-                    .map(c => <option key={c} value={c}>{c}</option>)}
+                  {Object.keys(COUNTRY_CITY).sort((a, b) => a.localeCompare(b, "tr")).map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
 
                 <select value={city} onChange={(e) => setCity(e.target.value)} style={selectStyle} disabled={!country}>
                   <option value="">{country ? t("career.city") : t("career.chooseCountryFirst")}</option>
-                  {country &&
-                    [...COUNTRY_CITY[country]]
-                      .sort((a, b) => a.localeCompare(b, "tr"))
-                      .map(ct => <option key={ct} value={ct}>{ct}</option>)}
+                  {country && [...COUNTRY_CITY[country]].sort((a, b) => a.localeCompare(b, "tr")).map(ct => <option key={ct} value={ct}>{ct}</option>)}
                 </select>
               </div>
 
-              {/* Diller (checkbox) */}
+              {/* Diller */}
               <div style={{ ...inputStyle, padding: 12 }}>
                 <div style={{ fontSize: 14, opacity: .9, marginBottom: 8 }}>{t("career.langs")}</div>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
@@ -1332,21 +1314,10 @@ const Kariyer = () => {
                 </div>
               </div>
 
-              <textarea
-                placeholder={t("career.about.ph")}
-                rows={4}
-                style={inputStyle}
-                value={about}
-                onChange={(e) => setAbout(e.target.value)}
-              />
+              <textarea placeholder={t("career.about.ph")} rows={4} style={inputStyle} value={about} onChange={(e) => setAbout(e.target.value)} />
 
               <div>
-                <input
-                  type="file"
-                  style={inputStyle}
-                  onChange={onCvChange}
-                  accept=".pdf,.doc,.docx"
-                />
+                <input type="file" style={inputStyle} onChange={onCvChange} accept=".pdf,.doc,.docx" />
                 {cvErr && <div style={{ color: "#fda4af", fontSize: 13, marginTop: 6 }}>{cvErr}</div>}
               </div>
 
@@ -1361,81 +1332,20 @@ const Kariyer = () => {
             </form>
           </div>
 
-          <div
-            style={{
-              background: "#0f172a",
-              border: "1px solid #233146",
-              borderRadius: 16,
-              padding: 20,
-              display: "grid",
-              gap: 12,
-            }}
-          >
-            <p style={{ opacity: .95 }}>
-              {t("career.lead")}
-            </p>
-            <p style={{ opacity: .7, fontSize: 13, marginTop: 10 }}>
-              {t("career.cv.acceptNote")}
-            </p>
+          <div style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20, display: "grid", gap: 12 }}>
+            <p style={{ opacity: .95 }}>{t("career.lead")}</p>
+            <p style={{ opacity: .7, fontSize: 13, marginTop: 10 }}>{t("career.cv.acceptNote")}</p>
 
-            {/* === İSTENEN ENTEGRASYON: Logo + İletişim Bilgileri === */}
-            <div
-              className="reveal"
-              style={{
-                marginTop: 12,
-                display: "flex",
-                justifyContent: "center"
-              }}
-              aria-label="Şirket logosu ve iletişim"
-            >
-              <div
-                style={{
-                  width: "100%",
-                  maxWidth: 480,
-                  border: "1px solid #233146",
-                  borderRadius: 16,
-                  background: "#0b1220",
-                  padding: 12
-                }}
-              >
-                <div
-                  style={{
-                    width: "100%",
-                    height: 240,
-                    borderRadius: 12,
-                    overflow: "hidden",
-                    background: "#ffffff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                  title="FreeConcept Logo"
-                >
-                  <img
-                    src="/images/logo.jpg"
-                    srcSet="/images/logo.jpg 1x, /images/logo@2x.jpg 2x"
-                    alt="FreeConcept Logo"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      display: "block"
-                    }}
-                    loading="lazy"
-                    decoding="async"
-                  />
+            {/* Logo + iletişim */}
+            <div className="reveal" style={{ marginTop: 12, display: "flex", justifyContent: "center" }} aria-label="Şirket logosu ve iletişim">
+              <div style={{ width: "100%", maxWidth: 480, border: "1px solid #233146", borderRadius: 16, background: "#0b1220", padding: 12 }}>
+                <div style={{ width: "100%", height: 240, borderRadius: 12, overflow: "hidden", background: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center" }} title="FreeConcept Logo">
+                  <img src="/images/logo.jpg" srcSet="/images/logo.jpg 1x, /images/logo@2x.jpg 2x" alt="FreeConcept Logo" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} loading="lazy" decoding="async" />
                 </div>
-
-                {/* LOGO ALTINA İLETİŞİM SATIRLARI */}
                 <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <Mail size={16} color="#cbd5e1" />
-                    <a
-                      href={`mailto:${CONTACT_EMAIL}`}
-                      style={{ color: "#e5e7eb", textDecoration: "underline" }}
-                    >
-                      {CONTACT_EMAIL}
-                    </a>
+                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "#e5e7eb", textDecoration: "underline" }}>{CONTACT_EMAIL}</a>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <MapPin size={16} color="#cbd5e1" />
@@ -1444,7 +1354,7 @@ const Kariyer = () => {
                 </div>
               </div>
             </div>
-            {/* === /Logo alanı + iletişim === */}
+            {/* /Logo + iletişim */}
           </div>
         </div>
       </div>
