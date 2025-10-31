@@ -58,7 +58,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     // sections
     "sec.about": "BİZ KİMİZ",
     "sec.mission": "HEDEFİMİZ",
-    "sec.partners": "PARTNERİMİZ",   // <— tekil
+    "sec.partners": "PARTNERİMİZ",   // tekil
 
     // about
     "about.p1": "Free Concept Telekomünikasyon (Antalya) ve Ce Concept (Fas), 2021 yılından beri İsviçre telekomünikasyon sektöründe kısa sürede büyük başarılara imza atmış iki güçlü şirkettir. Kuruluşumuzun ilk gününden beri İsviçre'nin önde gelen şirketlerinden Logic Group AG ile beraber çalışmaktayız.",
@@ -629,6 +629,12 @@ const GlobalReset = () => (
 
     .kpi { border-radius:16px; padding: clamp(20px, 3.8vw, 36px); background: radial-gradient(120% 120% at 20% 0%, rgba(99,102,241,.12), transparent 50%), linear-gradient(180deg, #0f172a 0%, #0b1220 100%); border:1px solid #233146; display:flex; align-items:center; justify-content:center; flex-direction:column; min-height: clamp(140px, 28vw, 200px); }
 
+    /* — KPI masaüstü font büyütme — */
+    @media (min-width: 900px){
+      .kpi strong { font-size: 40px; line-height: 1.1; }
+      .kpi span   { font-size: 18px; }
+    }
+
     .fc-plain{ padding:0 !important; border:0 !important; background:transparent !important; }
 
     /* Select görünürlüğü */
@@ -859,7 +865,7 @@ const Navbar = () => {
 };
 
 /* =========================================================
-   İletişim (artık sayfada statik kartta kullanıyoruz)
+   İletişim (statik kartta kullanılıyor)
 ========================================================= */
 const HR_EMAIL = "info@freeconcept.net";
 const CONTACT_EMAIL = HR_EMAIL;
@@ -1124,27 +1130,7 @@ const Home = () => {
         </div>
       </Section>
 
-      {/* HEDEFİMİZ */}
-      <Section id="hedefimiz" eyebrow={t("sec.mission")} dark padTop={80} padBottom={240}>
-        <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
-          <div className="copy-wide">
-            <p>{t("mission.p1")}</p>
-            <p>{t("mission.p2")}</p>
-            <div style={{ marginTop: 18 }}>
-              <a
-                href="#/kariyer"
-                className="featureCard"
-                style={{ padding: "12px 16px", borderRadius: 12, display: "inline-flex", alignItems: "center", gap: 8, color: "#e5e7eb", textDecoration: "none" }}
-                aria-label="Kariyer sayfasına git"
-              >
-                {t("cta.apply")}
-              </a>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* PARTNER — tek kart, büyük logo ve dış siteye yönlendirme */}
+      {/* PARTNER — @2x dosya 1× gibi kullanılıyor, masaüstünde büyük kart */}
       <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={260}>
         <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
           <a
@@ -1158,12 +1144,13 @@ const Home = () => {
           >
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
               <PartnerLogo
-                src="/partners/logic.png"
-                src2x="/partners/logic@2x.png"
+                /* Masaüstünde netlik için 2× dosyayı 1× gibi kullanıyoruz */
+                src="/partners/logic@2x.png"
+                /* 3× dosyan yoksa src2x VERME—retina yine net olur */
                 alt="Logic Group AG logo"
                 circular
                 size={160}
-                fit="cover"
+                fit="contain"
                 bg="rgba(255,255,255,0.06)"
               />
             </div>
@@ -1339,7 +1326,7 @@ const Kariyer = () => {
             </form>
           </div>
 
-        <div style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20, display: "grid", gap: 12 }}>
+          <div style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20, display: "grid", gap: 12 }}>
             <p style={{ opacity: .95 }}>{t("career.lead")}</p>
             <p style={{ opacity: .7, fontSize: 13, marginTop: 10 }}>{t("career.cv.acceptNote")}</p>
 
