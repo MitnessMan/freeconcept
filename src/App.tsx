@@ -58,7 +58,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     // sections
     "sec.about": "BİZ KİMİZ",
     "sec.mission": "HEDEFİMİZ",
-    "sec.partners": "PARTNERLERİMİZ",
+    "sec.partners": "PARTNERİMİZ",   // <— tekil
 
     // about
     "about.p1": "Free Concept Telekomünikasyon (Antalya) ve Ce Concept (Fas), 2021 yılından beri İsviçre telekomünikasyon sektöründe kısa sürede büyük başarılara imza atmış iki güçlü şirkettir. Kuruluşumuzun ilk gününden beri İsviçre'nin önde gelen şirketlerinden Logic Group AG ile beraber çalışmaktayız.",
@@ -861,8 +861,8 @@ const Navbar = () => {
 /* =========================================================
    İletişim (artık sayfada statik kartta kullanıyoruz)
 ========================================================= */
-const HR_EMAIL = "info@freeconcept.net";              // Başvuru & iletişim e-postası
-const CONTACT_EMAIL = HR_EMAIL;                       // Kartta da aynı mail görünsün
+const HR_EMAIL = "info@freeconcept.net";
+const CONTACT_EMAIL = HR_EMAIL;
 const MAPS_URL = "https://www.google.com/maps/place/Can+Polat+Villalar%C4%B1/@36.8671374,30.8368777,21z/data=!4m6!3m5!1s0x14c383003ea88805:0xe5393271a87edca7!8m2!3d36.8671674!4d30.8369061!16s%2Fg%2F11wfldn6db?entry=ttu";
 
 /* =========================================================
@@ -1144,28 +1144,32 @@ const Home = () => {
         </div>
       </Section>
 
-      {/* PARTNERLER — Salt çıkarıldı, Logic ortalandı */}
+      {/* PARTNER — tek kart, büyük logo ve dış siteye yönlendirme */}
       <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={260}>
         <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
           <a
             className="partnerCard reveal"
-            href="#"
-            onClick={(e) => e.preventDefault()}
-            aria-label="Logic Group AG kartı"
-            style={{ maxWidth: 520, width: "100%" }}
+            href="https://www.logicgroup-ks.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Logic Group AG web sitesine git"
+            title="Logic Group AG"
+            style={{ maxWidth: 760, width: "100%" }}
           >
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
               <PartnerLogo
                 src="/partners/logic.png"
                 src2x="/partners/logic@2x.png"
                 alt="Logic Group AG logo"
                 circular
-                size={110}
-                fit={"cover"}
-                bg={"rgba(255,255,255,0.06)"}
+                size={160}
+                fit="cover"
+                bg="rgba(255,255,255,0.06)"
               />
             </div>
-            <div style={{ opacity: .9 }}>Operatör / Servis Sağlayıcı</div>
+            <div style={{ opacity: .95, fontSize: 16, fontWeight: 700 }}>
+              Operatör / Servis Sağlayıcı
+            </div>
           </a>
         </div>
       </Section>
@@ -1174,7 +1178,7 @@ const Home = () => {
 };
 
 /* =========================================================
-   Kariyer Sayfası (Form) — İstenen eklemeler burada
+   Kariyer Sayfası (Form)
 ========================================================= */
 const WHATSAPP_NUMBER_INTL = "905394297969";
 const LANG_OPTIONS = ["Fransızca", "Almanca", "İngilizce", "Türkçe"] as const;
@@ -1264,7 +1268,6 @@ const Kariyer = () => {
     }
   };
 
-  // ---- İSTENEN EKLEMELER ----
   // Masaüstünde Gmail Compose, mobilde mailto:
   const onStaticEmailClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
@@ -1279,7 +1282,6 @@ const Kariyer = () => {
     e.preventDefault();
     window.open(MAPS_URL, "_blank", "noopener,noreferrer");
   };
-  // ---- /EKLEMELER ----
 
   return (
     <main style={{ background: "#0f172a", minHeight: "100vh", padding: "120px 16px 60px", color: "#e5e7eb" }}>
@@ -1337,7 +1339,7 @@ const Kariyer = () => {
             </form>
           </div>
 
-          <div style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20, display: "grid", gap: 12 }}>
+        <div style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20, display: "grid", gap: 12 }}>
             <p style={{ opacity: .95 }}>{t("career.lead")}</p>
             <p style={{ opacity: .7, fontSize: 13, marginTop: 10 }}>{t("career.cv.acceptNote")}</p>
 
@@ -1348,7 +1350,6 @@ const Kariyer = () => {
                   <img src="/images/logo.jpg" srcSet="/images/logo.jpg 1x, /images/logo@2x.jpg 2x" alt="FreeConcept Logo" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} loading="lazy" decoding="async" />
                 </div>
                 <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
-                  {/* E-posta: Masaüstünde Gmail, mobilde mailto */}
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <Mail size={16} color="#cbd5e1" />
                     <a
@@ -1360,7 +1361,6 @@ const Kariyer = () => {
                     </a>
                   </div>
 
-                  {/* Konum: Google Haritalar'a götür */}
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <MapPin size={16} color="#cbd5e1" />
                     <a
