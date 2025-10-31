@@ -58,7 +58,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     // sections
     "sec.about": "BİZ KİMİZ",
     "sec.mission": "HEDEFİMİZ",
-    "sec.partners": "PARTNERİMİZ",   // ← tekil
+    "sec.partners": "PARTNERİMİZ",
 
     // about
     "about.p1": "Free Concept Telekomünikasyon (Antalya) ve Ce Concept (Fas), 2021 yılından beri İsviçre telekomünikasyon sektöründe kısa sürede büyük başarılara imza atmış iki güçlü şirkettir. Kuruluşumuzun ilk gününden beri İsviçre'nin önde gelen şirketlerinden Logic Group AG ile beraber çalışmaktayız.",
@@ -158,7 +158,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "sec.about": "WER SIND WIR",
     "sec.mission": "UNSER ZIEL",
-    "sec.partners": "UNSER PARTNER", // ← tekil
+    "sec.partners": "UNSER PARTNER",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) und Ce Concept (Marokko) sind seit 2021 erfolgreich in der Schweizer Telekombranche. Seit dem ersten Tag arbeiten wir mit der Logic Group AG zusammen.",
     "about.p2": "Dank dieser Partnerschaft führten wir die Einführung von Salt sowie neuer Marken wie LG Net und LG Mobile in der Schweiz an. Was in Antalya klein begann, setzen wir heute mit drei Büros in zwei Ländern fort.",
@@ -252,7 +252,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "sec.about": "QUI SOMMES-NOUS",
     "sec.mission": "NOTRE OBJECTIF",
-    "sec.partners": "NOTRE PARTENAIRE", // ← tekil
+    "sec.partners": "NOTRE PARTENAIRE",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) et Ce Concept (Maroc) réussissent depuis 2021 sur le marché télécom suisse. Depuis le premier jour, nous collaborons avec Logic Group AG.",
     "about.p2": "Grâce à ce partenariat, nous avons lancé Salt ainsi que de nouvelles marques comme LG Net et LG Mobile en Suisse. L’aventure commencée à Antalya continue avec trois bureaux dans deux pays.",
@@ -346,7 +346,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "sec.about": "ABOUT US",
     "sec.mission": "OUR MISSION",
-    "sec.partners": "OUR PARTNER", // ← tekil
+    "sec.partners": "OUR PARTNER",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) and Ce Concept (Morocco) have achieved strong results in the Swiss telecom market since 2021. Since day one, we have worked with Logic Group AG.",
     "about.p2": "Thanks to this partnership we led the launches of Salt as well as new brands like LG Net and LG Mobile in Switzerland. What began with a small team in Antalya continues with three offices in two countries.",
@@ -823,7 +823,7 @@ const Navbar = () => {
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hakkimizda")}>{t("nav.about")}</a>
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hedefimiz")}>{t("nav.mission")}</a>
-            <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "partnerler")}>{t("nav.partners")}</a>
+            <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "partnerler")}>{t("sec.partners")}</a>
             <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
             <LanguageDropdown />
           </div>
@@ -848,7 +848,7 @@ const Navbar = () => {
           <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
           <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hakkimizda")}>{t("nav.about")}</a>
           <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hedefimiz")}>{t("nav.mission")}</a>
-          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "partnerler")}>{t("nav.partners")}</a>
+          <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "partnerler")}>{t("sec.partners")}</a>
           <a className="navlink" href="#/kariyer" onClick={(e) => go(e, "#/kariyer")}>{t("nav.career")}</a>
           <LanguageDropdown />
         </div>,
@@ -1124,27 +1124,7 @@ const Home = () => {
         </div>
       </Section>
 
-      {/* HEDEFİMİZ */}
-      <Section id="hedefimiz" eyebrow={t("sec.mission")} dark padTop={80} padBottom={240}>
-        <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
-          <div className="copy-wide">
-            <p>{t("mission.p1")}</p>
-            <p>{t("mission.p2")}</p>
-            <div style={{ marginTop: 18 }}>
-              <a
-                href="#/kariyer"
-                className="featureCard"
-                style={{ padding: "12px 16px", borderRadius: 12, display: "inline-flex", alignItems: "center", gap: 8, color: "#e5e7eb", textDecoration: "none" }}
-                aria-label="Kariyer sayfasına git"
-              >
-                {t("cta.apply")}
-              </a>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* PARTNER — tek partner, büyük logo ve link */}
+      {/* PARTNER — tek kart */}
       <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={220}>
         <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
           <a
@@ -1162,9 +1142,9 @@ const Home = () => {
                 src2x="/partners/logic@2x.png"
                 alt="Logic Group AG logo"
                 circular
-                size={160}            {/* büyütüldü */}
-                fit={"cover"}
-                bg={"rgba(255,255,255,0.06)"}
+                size={160}
+                fit="cover"
+                bg="rgba(255,255,255,0.06)"
               />
             </div>
             <div style={{ opacity: .95, fontSize: 16, fontWeight: 700 }}>
@@ -1268,7 +1248,7 @@ const Kariyer = () => {
     }
   };
 
-  // ---- statik kart aksiyonları ----
+  // ---- İstenen eklemeler: e-posta ve harita linkleri ----
   const onStaticEmailClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -1276,12 +1256,11 @@ const Kariyer = () => {
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}`;
     window.open(isMobile ? mailtoUrl : gmailUrl, "_blank", "noopener,noreferrer");
   };
-
   const onMapClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
     window.open(MAPS_URL, "_blank", "noopener,noreferrer");
   };
-  // ---- /statik kart aksiyonları ----
+  // ---- /eklemeler ----
 
   return (
     <main style={{ background: "#0f172a", minHeight: "100vh", padding: "120px 16px 60px", color: "#e5e7eb" }}>
