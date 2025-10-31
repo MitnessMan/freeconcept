@@ -90,7 +90,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     "career.email.ph": "E-posta",
     "career.phone.ph": "Telefon (05xx… veya +41…)",
     "career.country": "Ülke Seçiniz",
-    "career.city": "Şehir Seiniz",
+    "career.city": "Şehir Seçiniz",
     "career.chooseCountryFirst": "Önce ülke seçin",
     "career.langs": "Bildiğiniz diller",
     "career.about.ph": "Kısaca kendinizi anlatın",
@@ -581,7 +581,6 @@ const GlobalReset = () => (
       overflow:hidden;
       transition: transform .18s ease, box-shadow .22s ease, border-color .22s ease, filter .22s ease;
       backdrop-filter: blur(6px); will-change: transform;
-      touch-action: manipulation;
     }
     .featureCard::before{ content:""; position:absolute; inset:-1px; border-radius:16px;
       background: conic-gradient(from 180deg at 50% 50%, rgba(80,125,255,.45), rgba(25,211,174,.35), rgba(99,102,241,.55), rgba(80,125,255,.45));
@@ -589,8 +588,7 @@ const GlobalReset = () => (
     .featureCard::after{ content:""; position:absolute; top:-60%; left:-30%; width:60%; height:220%;
       transform: rotate(18deg); background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
       opacity:0; pointer-events:none; transition: opacity .25s ease, transform .25s ease; }
-    .featureCard:hover{ transform: translateY(-4px); box-shadow: 0 22px 46px rgba(0,0,0,.32); border-color: rgba(148,163,184,.28); filter: saturate(1.02); }
-    .featureCard:hover::after{ opacity:1; transform: translateX(40%) rotate(18deg); }
+    .featureCard:hover{ transform: translateY(-4px); box-shadow: 0 22px 46px rgba(0,0,0,.32); border-color: rgba(148,163,184,.28); }
 
     .fc-row { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; position:relative; z-index:1; }
     .chip { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background: rgba(148,163,184,.12); border:1px solid rgba(148,163,184,.22); font-size:12px; color:#cbd5e1; }
@@ -602,36 +600,24 @@ const GlobalReset = () => (
       background: radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0) 60%), linear-gradient(180deg,#1f2937 0%, #111827 100%);
       border: 1px solid #334155; border-radius: 16px; padding: clamp(16px, 3.5vw, 24px); text-align: center;
       transition: box-shadow .22s ease, transform .18s ease, border-color .18s ease; will-change: transform;
-      box-shadow: 0 10px 28px rgba(0,0,0,.24); background-clip: padding-box;
+      box-shadow: 0 10px 28px rgba(0,0,0,.24);
     }
     .partnerCard:hover { transform: translateY(-3px); box-shadow: 0 22px 40px rgba(0,0,0,.32); border-color:#3b4758; }
 
     .navlink { color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: .3px; opacity: .92; transition: opacity .16s ease; padding: 8px 10px; border-radius: 8px; }
     .navlink:focus-visible { outline: 2px solid #475569; outline-offset: 2px; }
-    .navlink:hover { opacity: 1; }
 
-    .sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
+    .sr-only { position:absolute!important; width:1px!important; height:1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; }
 
     .copy { max-width: 62ch; line-height: 1.7; font-size: clamp(15.5px, 1.8vw, 17.5px); }
-    .copy p { margin: 0 0 14px; }
-
     .copy-wide { max-width: 1000px; line-height: 1.8; font-size: clamp(15.5px, 2.2vw, 19px); margin: 0 auto; text-align: center; }
-    .copy-wide p { margin: 0 0 16px; }
 
-    /* Biz Kimiz – mobil düzen: grid'i gerçekten tek sütun yap, görselleri gizle, yazıyı sola hizala */
+    /* Biz Kimiz – mobil düzen */
     @media (max-width: 900px){
-      /* Doğru grid kapsayıcısını hedefle */
       #hakkimizda > div > .about-grid { grid-template-columns: 1fr !important; }
       #hakkimizda .about-media { display:none !important; }
       #hakkimizda .about-left { padding-right:0 !important; }
-      #hakkimizda .copy{
-        max-width: none !important;
-        width: 100% !important;
-        text-align: left !important;
-        margin: 0 !important;
-        font-size: clamp(15px, 3.8vw, 18px) !important;
-        line-height: 1.7;
-      }
+      #hakkimizda .copy{ max-width: none !important; text-align: left !important; }
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -641,17 +627,9 @@ const GlobalReset = () => (
 
     .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid #334155; background:#151d2e; color:#cbd5e1; font-size:12px; margin-right:8px; }
 
-    .kpi {
-      border-radius:16px; padding: clamp(20px, 3.8vw, 36px);
-      background: radial-gradient(120% 120% at 20% 0%, rgba(99,102,241,.12), transparent 50%), linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
-      border:1px solid #233146; display:flex; align-items:center; justify-content:center; flex-direction:column;
-      min-height: clamp(140px, 28vw, 200px); position:relative; overflow:hidden;
-    }
-    .kpi::after{ content:""; position:absolute; inset:-2px; border-radius:16px; background: radial-gradient(60% 60% at 50% -10%, rgba(148,163,184,.18), transparent 60%); opacity:.4; pointer-events:none; }
-    .kpi strong { line-height:1; letter-spacing:.3px; color:#fff; font-size: clamp(28px, 9vw, 64px); }
-    .kpi span { opacity:.95; margin-top:12px; font-size: clamp(14px, 2.8vw, 18px); color:#fff; }
+    .kpi { border-radius:16px; padding: clamp(20px, 3.8vw, 36px); background: radial-gradient(120% 120% at 20% 0%, rgba(99,102,241,.12), transparent 50%), linear-gradient(180deg, #0f172a 0%, #0b1220 100%); border:1px solid #233146; display:flex; align-items:center; justify-content:center; flex-direction:column; min-height: clamp(140px, 28vw, 200px); }
 
-    .fc-plain{ padding:0 !important; border:0 !important; background:transparent !important; box-shadow:none !important; }
+    .fc-plain{ padding:0 !important; border:0 !important; background:transparent !important; }
 
     /* Select görünürlüğü */
     select { background:#ffffff !important; color:#111827 !important; }
@@ -660,16 +638,13 @@ const GlobalReset = () => (
     /* ======= Responsive Navbar ======= */
     .nav-wrap { position: relative; }
     .nav-links { display:flex; align-items:center; gap: clamp(12px, 2.2vw, 24px); margin-left:auto; }
-    .hamburger { display:none; border:0; background:transparent; color:#fff; padding: 10px; border-radius:10px; line-height: 0; }
-    .hamburger:focus-visible { outline:2px solid #334155; outline-offset:2px; }
+    .hamburger { display:none; border:0; background:transparent; color:#fff; padding: 10px; border-radius:10px; }
+    .hamburger:focus-visible { outline:2px solid #334155; }
 
-    /* Language dropdown styles (mobile-friendly) */
+    /* Language dropdown */
     .lang { position: relative; }
     .lang-plain { display:inline-flex; align-items:center; gap:8px; font-weight:700; color:#fff; background:transparent; border:1px solid #334155; padding:8px 10px; border-radius:10px; cursor:pointer; }
-    .lang-plain:focus-visible { outline:2px solid #475569; outline-offset:2px; }
-    .lang-list { position:absolute; right:0; top: calc(100% + 8px); background: rgba(15,23,42,.98); border:1px solid #334155; border-radius:12px; padding:6px; display:flex; flex-direction:column; gap:4px; min-width: 220px; z-index: 50; backdrop-filter: blur(6px); }
-    .lang-item { text-align:left; padding:10px 12px; border-radius:8px; background:transparent; color:#e5e7eb; border:0; cursor:pointer; }
-    .lang-item:hover, .lang-item:focus { background: rgba(148,163,184,.12); }
+    .lang-list { position:absolute; right:0; top: calc(100% + 8px); background: rgba(15,23,42,.98); border:1px solid #334155; border-radius:12px; padding:6px; display:flex; flex-direction:column; gap:4px; min-width: 220px; z-index: 50; }
 
     /* ======= Mobile tweaks ======= */
     @media (max-width: 900px){
@@ -677,26 +652,16 @@ const GlobalReset = () => (
       .nav-links { display:none; }
       .hamburger { display:inline-flex; }
 
-      /* Gerçek tam ekran overlay */
       .mobileMenu {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        background: rgba(15,23,42,.98);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        border-bottom:1px solid #1f2937;
-        box-shadow: 0 12px 28px rgba(0,0,0,.35);
+        position: fixed; inset: 0; z-index: 9999; background: rgba(15,23,42,.98);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        border-bottom:1px solid #1f2937; box-shadow: 0 12px 28px rgba(0,0,0,.35);
         padding: calc(72px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
-        display:flex; flex-direction:column; gap:14px;
-        height: 100dvh;
-        overflow:auto;
-        -webkit-overflow-scrolling: touch;
+        display:flex; flex-direction:column; gap:14px; height: 100dvh; overflow:auto;
       }
       .mobileMenu a, .mobileMenu .lang-plain { padding:12px 10px; border-radius:10px; border:1px solid #233146; }
       .brand-title { display:none; }
 
-      /* Kariyer: tek sütun */
       .career-grid { grid-template-columns: 1fr !important; }
     }
   `}</style>
@@ -761,7 +726,7 @@ function LanguageDropdown() {
 }
 
 /* =========================================================
-   Navbar (mobil menü güçlendirildi)
+   Navbar
 ========================================================= */
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
@@ -780,7 +745,6 @@ const Navbar = () => {
     if (sectionId) setTimeout(() => scrollToId(sectionId), 80);
   };
 
-  // mobilde dışarı tıklayınca kapat — mobileMenu'yu hariç tut
   React.useEffect(() => {
     const close = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -792,7 +756,6 @@ const Navbar = () => {
     return () => document.removeEventListener("click", close as any);
   }, []);
 
-  // Safe-area destekli başlık
   const headerStyle: React.CSSProperties = {
     position: "sticky",
     top: 0,
@@ -803,7 +766,6 @@ const Navbar = () => {
     WebkitBackdropFilter: open ? "none" : "blur(6px)",
   };
 
-  // Menu açıkken body scroll'u kilitle
   React.useEffect(() => {
     if (open) {
       const prev = document.body.style.overflow;
@@ -857,7 +819,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Desktop links */}
           <div className="nav-links" aria-label="Ana navigasyon">
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
             <a className="navlink" href="#/" onClick={(e) => go(e, "#/", "hakkimizda")}>{t("nav.about")}</a>
@@ -867,7 +828,6 @@ const Navbar = () => {
             <LanguageDropdown />
           </div>
 
-          {/* Mobile button */}
           <button
             className="hamburger"
             aria-label="Menüyü aç/kapat"
@@ -877,13 +837,12 @@ const Navbar = () => {
             onKeyDown={onHamburgerKey}
           >
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </button>
         </nav>
       </header>
 
-      {/* Mobile panel: BODY'ye portal */}
       {open && createPortal(
         <div id="mobileMenu" className="mobileMenu" role="dialog" aria-modal="true">
           <a className="navlink" href="#/" onClick={(e) => go(e, "#/")}>{t("nav.home")}</a>
@@ -900,9 +859,11 @@ const Navbar = () => {
 };
 
 /* =========================================================
-   İletişim (ARTIK KULLANILMIYOR – istek üzerine kaldırıldı)
+   İletişim (artık sayfada statik kartta kullanıyoruz)
 ========================================================= */
-const CONTACT_EMAIL = "info@freeconcept.com.tr";
+const HR_EMAIL = "info@freeconcept.net";              // Başvuru & iletişim e-postası
+const CONTACT_EMAIL = HR_EMAIL;                       // Kartta da aynı mail görünsün
+const MAPS_URL = "https://www.google.com/maps/place/Can+Polat+Villalar%C4%B1/@36.8671374,30.8368777,21z/data=!4m6!3m5!1s0x14c383003ea88805:0xe5393271a87edca7!8m2!3d36.8671674!4d30.8369061!16s%2Fg%2F11wfldn6db?entry=ttu";
 
 /* =========================================================
    Cookie
@@ -930,17 +891,11 @@ const CookieSection = () => {
           }}
         >
           {t("cookie.text")}
-          <span style={{ marginLeft: 8, textDecoration: "underline", cursor: "pointer" }}>
-            KVKK
-          </span>
+          <span style={{ marginLeft: 8, textDecoration: "underline", cursor: "pointer" }}>KVKK</span>
           <span style={{ margin: "0 8px" }}>•</span>
-          <span style={{ textDecoration: "underline", cursor: "pointer" }}>
-            Aydınlatma Metni
-          </span>
+          <span style={{ textDecoration: "underline", cursor: "pointer" }}>Aydınlatma Metni</span>
           <span style={{ margin: "0 8px" }}>•</span>
-          <span style={{ textDecoration: "underline", cursor: "pointer" }}>
-            Çerez Politikası
-          </span>
+          <span style={{ textDecoration: "underline", cursor: "pointer" }}>Çerez Politikası</span>
         </div>
       </div>
     </section>
@@ -948,7 +903,7 @@ const CookieSection = () => {
 };
 
 /* =========================================================
-   Layout (reveal) + Scroll Restore + Favicon/Title + Viewport
+   Layout
 ========================================================= */
 function Layout({ children }: { children: React.ReactNode }) {
   const loc = useLocation();
@@ -978,11 +933,9 @@ function Layout({ children }: { children: React.ReactNode }) {
   }, [loc.pathname]);
 
   React.useEffect(() => {
-    // route değişince başa
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [loc.pathname]);
 
-  // Head düzenlemeleri: title, favicon, viewport
   React.useEffect(() => {
     document.title = t("nav.brand");
     const setFavicon = (href: string) => {
@@ -1001,7 +954,6 @@ function Layout({ children }: { children: React.ReactNode }) {
       testImg.src = "/images/logo-64.png";
     }, 0);
 
-    // Mobile viewport (özellikle iOS için)
     let vp = document.querySelector<HTMLMetaElement>('meta[name="viewport"]');
     if (!vp) {
       vp = document.createElement("meta");
@@ -1065,7 +1017,6 @@ const Home = () => {
 
   return (
     <>
-      {/* HERO */}
       <section
         id="hero"
         className="reveal"
@@ -1116,7 +1067,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Sağ: 6 premium kart */}
             <div className="reveal">
               <div className="featureCard" style={{ background: "#111827", borderRadius: 24, padding: 16 }}>
                 <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
@@ -1135,7 +1085,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* KPI — responsive */}
           <div className="reveal" style={{ marginTop: 28 }}>
             <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))" }}>
               <div className="kpi featureCard"><strong>%96</strong><span>{t("kpi.satisfaction")}</span></div>
@@ -1149,15 +1098,7 @@ const Home = () => {
       {/* BİZ KİMİZ */}
       <Section id="hakkimizda" eyebrow={t("sec.about")} dark padTop={200}>
         <h2 className="sr-only">{t("sec.about")}</h2>
-        <div
-          className="about-grid"
-          style={{
-            display: "grid",
-            gap: 28,
-            gridTemplateColumns: "1.1fr .9fr",
-            alignItems: "start",
-          }}
-        >
+        <div className="about-grid" style={{ display: "grid", gap: 28, gridTemplateColumns: "1.1fr .9fr", alignItems: "start" }}>
           <div className="reveal about-left" style={{ paddingRight: 8 }}>
             <div className="copy" style={{ opacity: .96, textAlign: "left", color: "#fff" }}>
               <p>{t("about.p1")}</p>
@@ -1166,36 +1107,17 @@ const Home = () => {
             </div>
           </div>
 
-          {/* mobilde gizlenecek görseller için class eklendi */}
           <div className="reveal about-media">
             <div className="featureCard fc-plain" style={{ borderRadius: 16, overflow: "hidden" }}>
-              <img
-                src="/images/kadinlar.jpg"
-                alt="Team"
-                style={{ width: "100%", height: "clamp(180px, 40vw, 220px)", objectFit: "cover", display: "block" }}
-                loading="lazy"
-                decoding="async"
-              />
+              <img src="/images/kadinlar.jpg" alt="Team" style={{ width: "100%", height: "clamp(180px, 40vw, 220px)", objectFit: "cover", display: "block" }} loading="lazy" decoding="async" />
             </div>
 
             <div className="reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16 }}>
               <div className="featureCard fc-plain" style={{ borderRadius: 16, overflow: "hidden" }}>
-                <img
-                  src="/images/kadin.jpg"
-                  alt="Agent"
-                  style={{ width: "100%", height: "clamp(180px, 45vw, 250px)", objectFit: "cover", display: "block" }}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src="/images/kadin.jpg" alt="Agent" style={{ width: "100%", height: "clamp(180px, 45vw, 250px)", objectFit: "cover", display: "block" }} loading="lazy" decoding="async" />
               </div>
               <div className="featureCard fc-plain" style={{ borderRadius: 16, overflow: "hidden" }}>
-                <img
-                  src="/images/ofis.jpg"
-                  alt="Office"
-                  style={{ width: "100%", height: "clamp(180px, 45vw, 250px)", objectFit: "cover", display: "block" }}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src="/images/ofis.jpg" alt="Office" style={{ width: "100%", height: "clamp(180px, 45vw, 250px)", objectFit: "cover", display: "block" }} loading="lazy" decoding="async" />
               </div>
             </div>
           </div>
@@ -1212,15 +1134,7 @@ const Home = () => {
               <a
                 href="#/kariyer"
                 className="featureCard"
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  color: "#e5e7eb",
-                  textDecoration: "none",
-                }}
+                style={{ padding: "12px 16px", borderRadius: 12, display: "inline-flex", alignItems: "center", gap: 8, color: "#e5e7eb", textDecoration: "none" }}
                 aria-label="Kariyer sayfasına git"
               >
                 {t("cta.apply")}
@@ -1232,36 +1146,14 @@ const Home = () => {
 
       {/* PARTNERLER */}
       <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={260}>
-        <div
-          className="reveal"
-          style={{
-            display: "grid",
-            gap: 18,
-            gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-          }}
-        >
+        <div className="reveal" style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
           {[
             { name: "Logic Group AG", logo: "/partners/logic.png", logo2x: "/partners/logic@2x.png", fit: "cover" as FitMode, bg: "rgba(255,255,255,0.06)", size: 110 },
             { name: "Salt", logo: "/partners/salt.png", fit: "contain" as FitMode, bg: "#ffffff", size: 120, padding: 10 },
           ].map((p) => (
-            <a
-              key={p.name}
-              className="partnerCard reveal"
-              href="#"
-              onClick={(e) => e.preventDefault()}
-              aria-label={`${p.name} kartı`}
-            >
+            <a key={p.name} className="partnerCard reveal" href="#" onClick={(e) => e.preventDefault()} aria-label={`${p.name} kartı`}>
               <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
-                <PartnerLogo
-                  src={p.logo}
-                  src2x={(p as any).logo2x}
-                  alt={`${p.name} logo`}
-                  circular
-                  size={(p as any).size ?? 120}
-                  fit={(p as any).fit ?? "cover"}
-                  padding={(p as any).padding ?? 0}
-                  bg={(p as any).bg ?? "rgba(255,255,255,0.06)"}
-                />
+                <PartnerLogo src={p.logo} src2x={(p as any).logo2x} alt={`${p.name} logo`} circular size={(p as any).size ?? 120} fit={(p as any).fit ?? "cover"} padding={(p as any).padding ?? 0} bg={(p as any).bg ?? "rgba(255,255,255,0.06)"} />
               </div>
               <div style={{ opacity: .9 }}>Operatör / Servis Sağlayıcı</div>
             </a>
@@ -1273,17 +1165,16 @@ const Home = () => {
 };
 
 /* =========================================================
-   Kariyer Sayfası (Form)
+   Kariyer Sayfası (Form) — İstenen eklemeler burada
 ========================================================= */
-const HR_EMAIL = "info@freeconcept.net";
 const WHATSAPP_NUMBER_INTL = "905394297969";
 const LANG_OPTIONS = ["Fransızca", "Almanca", "İngilizce", "Türkçe"] as const;
 
-const TR_CITIES = ["Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli", "Diyarbakır", "Edirne", "Elazığ", "Erzincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari", "Hatay", "Isparta", "Mersin", "İstanbul", "İzmir", "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir", "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir", "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat", "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman", "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"];
-const CH_CITIES = ["Aarau", "Baden", "Baar", "Basel", "Bern", "Biel/Bienne", "Carouge", "Chur", "Dietikon", "Emmen", "Frauenfeld", "Fribourg", "Geneve", "Genève", "Köniz", "Kriens", "La Chaux-de-Fonds", "Lausanne", "Lugano", "Luzern", "Montreux", "Meyrin", "Neuchâtel", "Rapperswil-Jona", "Sion", "Schaffhausen", "St. Gallen", "Thun", "Uster", "Vernier", "Wädenswil", "Wetzikon", "Wil", "Winterthur", "Yverdon-les-Bains", "Zug", "Zürich"];
-const DE_CITIES = ["Aachen", "Augsburg", "Berlin", "Bielefeld", "Bochum", "Bonn", "Braunschweig", "Bremen", "Chemnitz", "Dortmund", "Dresden", "Duisburg", "Düsseldorf", "Essen", "Frankfurt am Main", "Freiburg im Breisgau", "Gelsenkirchen", "Hagen", "Hamburg", "Hannover", "Heidelberg", "Herne", "Karlsruhe", "Kassel", "Kiel", "Köln", "Krefeld", "Leipzig", "Leverkusen", "Lübeck", "Magdeburg", "Mainz", "Mannheim", "Mönchengladbach", "München", "Münster", "Nürnberg", "Oberhausen", "Oldenburg", "Osnabrück", "Potsdam", "Rostock", "Saarbrücken", "Solingen", "Stuttgart", "Wiesbaden", "Wuppertal"];
-const FR_CITIES = ["Aix-en-Provence", "Amiens", "Angers", "Annecy", "Argenteuil", "Avignon", "Bordeaux", "Boulogne-Billancourt", "Brest", "Caen", "Clermont-Ferrand", "Dijon", "Grenoble", "Le Havre", "Lille", "Limoges", "Lyon", "Marseille", "Metz", "Montpellier", "Montreuil", "Mulhouse", "Nancy", "Nantes", "Nice", "Nîmes", "Orléans", "Paris", "Perpignan", "Poitiers", "Reims", "Rennes", "Rouen", "Saint-Denis", "Saint-Étienne", "Strasbourg", "Toulon", "Toulouse", "Tours", "Villeurbanne"];
-const MA_CITIES = ["Agadir", "Al Hoceïma", "Béni Mellal", "Berkane", "Casablanca", "Dakhla", "El Jadida", "Errachidia", "Fès", "Guelmim", "Kénitra", "Khémisset", "Khouribga", "Ksar El-Kébir", "Larache", "Laâyoune", "Marrakech", "Meknès", "Mohammédia", "Nador", "Ouarzazate", "Oujda", "Rabat", "Safi", "Settat", "Taroudant", "Taza", "Témara", "Tétouan", "Tanger"];
+const TR_CITIES = ["Adana","Adıyaman","Afyonkarahisar","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
+const CH_CITIES = ["Aarau","Baden","Baar","Basel","Bern","Biel/Bienne","Carouge","Chur","Dietikon","Emmen","Frauenfeld","Fribourg","Geneve","Genève","Köniz","Kriens","La Chaux-de-Fonds","Lausanne","Lugano","Luzern","Montreux","Meyrin","Neuchâtel","Rapperswil-Jona","Sion","Schaffhausen","St. Gallen","Thun","Uster","Vernier","Wädenswil","Wetzikon","Wil","Winterthur","Yverdon-les-Bains","Zug","Zürich"];
+const DE_CITIES = ["Aachen","Augsburg","Berlin","Bielefeld","Bochum","Bonn","Braunschweig","Bremen","Chemnitz","Dortmund","Dresden","Duisburg","Düsseldorf","Essen","Frankfurt am Main","Freiburg im Breisgau","Gelsenkirchen","Hagen","Hamburg","Hannover","Heidelberg","Herne","Karlsruhe","Kassel","Kiel","Köln","Krefeld","Leipzig","Leverkusen","Lübeck","Magdeburg","Mainz","Mannheim","Mönchengladbach","München","Münster","Nürnberg","Oberhausen","Oldenburg","Osnabrück","Potsdam","Rostock","Saarbrücken","Solingen","Stuttgart","Wiesbaden","Wuppertal"];
+const FR_CITIES = ["Aix-en-Provence","Amiens","Angers","Annecy","Argenteuil","Avignon","Bordeaux","Boulogne-Billancourt","Brest","Caen","Clermont-Ferrand","Dijon","Grenoble","Le Havre","Lille","Limoges","Lyon","Marseille","Metz","Montpellier","Montreuil","Mulhouse","Nancy","Nantes","Nice","Nîmes","Orléans","Paris","Perpignan","Poitiers","Reims","Rennes","Rouen","Saint-Denis","Saint-Étienne","Strasbourg","Toulon","Toulouse","Tours","Villeurbanne"];
+const MA_CITIES = ["Agadir","Al Hoceïma","Béni Mellal","Berkane","Casablanca","Dakhla","El Jadida","Errachidia","Fès","Guelmim","Kénitra","Khémisset","Khouribga","Ksar El-Kébir","Larache","Laâyoune","Marrakech","Meknès","Mohammédia","Nador","Ouarzazate","Oujda","Rabat","Safi","Settat","Taroudant","Taza","Témara","Tétouan","Tanger"];
 
 const COUNTRY_CITY: Record<string, string[]> = {
   "Türkiye": TR_CITIES,
@@ -1306,26 +1197,21 @@ const Kariyer = () => {
   const [cvName, setCvName] = React.useState("");
   const [cvErr, setCvErr] = React.useState<string | null>(null);
 
-  const toggleLang = (l: string) =>
-    setLangs((prev) => (prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]));
+  const toggleLang = (l: string) => setLangs((prev) => (prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]));
 
   const buildText = () => {
     const L = (k: string) => I18N[lang][k] ?? I18N.tr[k] ?? k;
     const langText = langs.length ? langs.join(", ") : "—";
     const location = [country || "—", city || "—"].filter(Boolean).join(" / ");
     return [
-      L("msg.header"),
-      "",
+      L("msg.header"), "",
       `${L("msg.email")}: ${email || "—"}`,
       `${L("msg.phone")}: ${phone || "—"}`,
       `${L("msg.location")}: ${location}`,
-      `${L("msg.langs")}: ${langText}`,
-      "",
+      `${L("msg.langs")}: ${langText}`, "",
       `${L("msg.summary")}:`,
-      about || "—",
-      "",
-      cvName ? `${L("msg.cv")}: ${cvName} ${L("msg.cv.note")}` : undefined,
-      "",
+      about || "—", "",
+      cvName ? `${L("msg.cv")}: ${cvName} ${L("msg.cv.note")}` : undefined, "",
       L("msg.sent")
     ].filter(Boolean).join("\n");
   };
@@ -1334,7 +1220,7 @@ const Kariyer = () => {
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     const mailtoUrl = `mailto:${encodeURIComponent(HR_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    window.open(isMobile ? mailtoUrl : gmailUrl, "_blank");
+    window.open(isMobile ? mailtoUrl : gmailUrl, "_blank", "noopener,noreferrer");
   };
 
   const sendGmail = (e: React.MouseEvent) => {
@@ -1348,13 +1234,10 @@ const Kariyer = () => {
     e.preventDefault();
     if (!kvkk) { alert(t("career.err.kvkk")); return; }
     const url = `https://wa.me/${WHATSAPP_NUMBER_INTL}?text=${encodeURIComponent(buildText())}`;
-    window.open(url, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  const onCountryChange = (val: string) => {
-    setCountry(val as any);
-    setCity("");
-  };
+  const onCountryChange = (val: string) => { setCountry(val as any); setCity(""); };
 
   const onCvChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setCvErr(null);
@@ -1365,43 +1248,44 @@ const Kariyer = () => {
     the: {
       const lower = name.toLowerCase();
       const hasExt = okExt.some(ext => lower.endsWith(ext));
-      if (!hasExt) {
-        setCvErr(t("career.cv.err.ext"));
-        e.target.value = "";
-        setCvName("");
-        break the;
-      }
-      const maxBytes = 10 * 1024 * 1024; // 10MB
-      if (f.size > maxBytes) {
-        setCvErr(t("career.cv.err.size"));
-        e.target.value = "";
-        setCvName("");
-        break the;
-      }
+      if (!hasExt) { setCvErr(t("career.cv.err.ext")); e.target.value = ""; setCvName(""); break the; }
+      const maxBytes = 10 * 1024 * 1024;
+      if (f.size > maxBytes) { setCvErr(t("career.cv.err.size")); e.target.value = ""; setCvName(""); break the; }
       setCvName(name);
     }
   };
+
+  // ---- İSTENEN EKLEMELER ----
+  // Masaüstünde Gmail Compose, mobilde mailto:
+  const onStaticEmailClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const mailtoUrl = `mailto:${HR_EMAIL}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}`;
+    window.open(isMobile ? mailtoUrl : gmailUrl, "_blank", "noopener,noreferrer");
+  };
+
+  // Konum linki – Google Haritalar:
+  const onMapClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
+    window.open(MAPS_URL, "_blank", "noopener,noreferrer");
+  };
+  // ---- /EKLEMELER ----
 
   return (
     <main style={{ background: "#0f172a", minHeight: "100vh", padding: "120px 16px 60px", color: "#e5e7eb" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto" }}>
         <h1 style={{ fontSize: 36, fontWeight: 900, textAlign: "center", marginBottom: 16 }}>{t("career.title")}</h1>
-        <p style={{ textAlign: "center", opacity: .9, marginBottom: 28 }}>
-          {t("career.lead")}
-        </p>
+        <p style={{ textAlign: "center", opacity: .9, marginBottom: 28 }}>{t("career.lead")}</p>
 
-        {/* className eklendi: mobilde tek sütun */}
         <div className="career-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr .9fr", gap: 24 }}>
-          <div
-            style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20 }}
-          >
+          <div style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20 }}>
             <form style={{ display: "grid", gap: 14 }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <input placeholder={t("career.email.ph")} style={inputStyle} value={email} onChange={e => setEmail(e.target.value)} inputMode="email" />
                 <input placeholder={t("career.phone.ph")} style={inputStyle} value={phone} onChange={e => setPhone(e.target.value)} inputMode="tel" />
               </div>
 
-              {/* Ülke → Şehir */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <select value={country} onChange={(e) => onCountryChange(e.target.value)} style={selectStyle}>
                   <option value="">{t("career.country")}</option>
@@ -1414,7 +1298,6 @@ const Kariyer = () => {
                 </select>
               </div>
 
-              {/* Diller */}
               <div style={{ ...inputStyle, padding: 12 }}>
                 <div style={{ fontSize: 14, opacity: .9, marginBottom: 8 }}>{t("career.langs")}</div>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
@@ -1456,13 +1339,28 @@ const Kariyer = () => {
                   <img src="/images/logo.jpg" srcSet="/images/logo.jpg 1x, /images/logo@2x.jpg 2x" alt="FreeConcept Logo" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} loading="lazy" decoding="async" />
                 </div>
                 <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
+                  {/* E-posta: Masaüstünde Gmail, mobilde mailto */}
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <Mail size={16} color="#cbd5e1" />
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "#e5e7eb", textDecoration: "underline" }}>{CONTACT_EMAIL}</a>
+                    <a
+                      href={`mailto:${CONTACT_EMAIL}`}
+                      onClick={onStaticEmailClick}
+                      style={{ color: "#e5e7eb", textDecoration: "underline" }}
+                    >
+                      {CONTACT_EMAIL}
+                    </a>
                   </div>
+
+                  {/* Konum: Google Haritalar'a götür */}
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <MapPin size={16} color="#cbd5e1" />
-                    <span>Muratpaşa, Antalya, Türkiye</span>
+                    <a
+                      href={MAPS_URL}
+                      onClick={onMapClick}
+                      style={{ color: "#e5e7eb", textDecoration: "underline" }}
+                    >
+                      Muratpaşa, Antalya, Türkiye
+                    </a>
                   </div>
                 </div>
               </div>
