@@ -1144,20 +1144,29 @@ const Home = () => {
         </div>
       </Section>
 
-      {/* PARTNERLER */}
+      {/* PARTNERLER — Salt çıkarıldı, Logic ortalandı */}
       <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={260}>
-        <div className="reveal" style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
-          {[
-            { name: "Logic Group AG", logo: "/partners/logic.png", logo2x: "/partners/logic@2x.png", fit: "cover" as FitMode, bg: "rgba(255,255,255,0.06)", size: 110 },
-            { name: "Salt", logo: "/partners/salt.png", fit: "contain" as FitMode, bg: "#ffffff", size: 120, padding: 10 },
-          ].map((p) => (
-            <a key={p.name} className="partnerCard reveal" href="#" onClick={(e) => e.preventDefault()} aria-label={`${p.name} kartı`}>
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
-                <PartnerLogo src={p.logo} src2x={(p as any).logo2x} alt={`${p.name} logo`} circular size={(p as any).size ?? 120} fit={(p as any).fit ?? "cover"} padding={(p as any).padding ?? 0} bg={(p as any).bg ?? "rgba(255,255,255,0.06)"} />
-              </div>
-              <div style={{ opacity: .9 }}>Operatör / Servis Sağlayıcı</div>
-            </a>
-          ))}
+        <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
+          <a
+            className="partnerCard reveal"
+            href="#"
+            onClick={(e) => e.preventDefault()}
+            aria-label="Logic Group AG kartı"
+            style={{ maxWidth: 520, width: "100%" }}
+          >
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
+              <PartnerLogo
+                src="/partners/logic.png"
+                src2x="/partners/logic@2x.png"
+                alt="Logic Group AG logo"
+                circular
+                size={110}
+                fit={"cover"}
+                bg={"rgba(255,255,255,0.06)"}
+              />
+            </div>
+            <div style={{ opacity: .9 }}>Operatör / Servis Sağlayıcı</div>
+          </a>
         </div>
       </Section>
     </>
