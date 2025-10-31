@@ -58,7 +58,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     // sections
     "sec.about": "BİZ KİMİZ",
     "sec.mission": "HEDEFİMİZ",
-    "sec.partners": "PARTNERİMİZ",   // ← tekil
+    "sec.partners": "PARTNERLERİMİZ",
 
     // about
     "about.p1": "Free Concept Telekomünikasyon (Antalya) ve Ce Concept (Fas), 2021 yılından beri İsviçre telekomünikasyon sektöründe kısa sürede büyük başarılara imza atmış iki güçlü şirkettir. Kuruluşumuzun ilk gününden beri İsviçre'nin önde gelen şirketlerinden Logic Group AG ile beraber çalışmaktayız.",
@@ -158,7 +158,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "sec.about": "WER SIND WIR",
     "sec.mission": "UNSER ZIEL",
-    "sec.partners": "UNSER PARTNER", // ← tekil
+    "sec.partners": "UNSERE PARTNER",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) und Ce Concept (Marokko) sind seit 2021 erfolgreich in der Schweizer Telekombranche. Seit dem ersten Tag arbeiten wir mit der Logic Group AG zusammen.",
     "about.p2": "Dank dieser Partnerschaft führten wir die Einführung von Salt sowie neuer Marken wie LG Net und LG Mobile in der Schweiz an. Was in Antalya klein begann, setzen wir heute mit drei Büros in zwei Ländern fort.",
@@ -252,7 +252,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "sec.about": "QUI SOMMES-NOUS",
     "sec.mission": "NOTRE OBJECTIF",
-    "sec.partners": "NOTRE PARTENAIRE", // ← tekil
+    "sec.partners": "NOS PARTENAIRES",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) et Ce Concept (Maroc) réussissent depuis 2021 sur le marché télécom suisse. Depuis le premier jour, nous collaborons avec Logic Group AG.",
     "about.p2": "Grâce à ce partenariat, nous avons lancé Salt ainsi que de nouvelles marques comme LG Net et LG Mobile en Suisse. L’aventure commencée à Antalya continue avec trois bureaux dans deux pays.",
@@ -346,7 +346,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "sec.about": "ABOUT US",
     "sec.mission": "OUR MISSION",
-    "sec.partners": "OUR PARTNER", // ← tekil
+    "sec.partners": "OUR PARTNERS",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) and Ce Concept (Morocco) have achieved strong results in the Swiss telecom market since 2021. Since day one, we have worked with Logic Group AG.",
     "about.p2": "Thanks to this partnership we led the launches of Salt as well as new brands like LG Net and LG Mobile in Switzerland. What began with a small team in Antalya continues with three offices in two countries.",
@@ -837,7 +837,7 @@ const Navbar = () => {
             onKeyDown={onHamburgerKey}
           >
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </nav>
@@ -861,8 +861,8 @@ const Navbar = () => {
 /* =========================================================
    İletişim (artık sayfada statik kartta kullanıyoruz)
 ========================================================= */
-const HR_EMAIL = "info@freeconcept.net";
-const CONTACT_EMAIL = HR_EMAIL;
+const HR_EMAIL = "info@freeconcept.net";              // Başvuru & iletişim e-postası
+const CONTACT_EMAIL = HR_EMAIL;                       // Kartta da aynı mail görünsün
 const MAPS_URL = "https://www.google.com/maps/place/Can+Polat+Villalar%C4%B1/@36.8671374,30.8368777,21z/data=!4m6!3m5!1s0x14c383003ea88805:0xe5393271a87edca7!8m2!3d36.8671674!4d30.8369061!16s%2Fg%2F11wfldn6db?entry=ttu";
 
 /* =========================================================
@@ -1144,33 +1144,20 @@ const Home = () => {
         </div>
       </Section>
 
-      {/* PARTNER — tek partner, büyük logo ve link */}
-      <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={220}>
-        <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
-          <a
-            className="partnerCard reveal"
-            href="https://www.logicgroup-ks.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Logic Group AG web sitesine git"
-            style={{ maxWidth: 760, width: "100%" }}
-            title="Logic Group AG"
-          >
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
-              <PartnerLogo
-                src="/partners/logic.png"
-                src2x="/partners/logic@2x.png"
-                alt="Logic Group AG logo"
-                circular
-                size={160}            {/* büyütüldü */}
-                fit={"cover"}
-                bg={"rgba(255,255,255,0.06)"}
-              />
-            </div>
-            <div style={{ opacity: .95, fontSize: 16, fontWeight: 700 }}>
-              Operatör / Servis Sağlayıcı
-            </div>
-          </a>
+      {/* PARTNERLER */}
+      <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={260}>
+        <div className="reveal" style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
+          {[
+            { name: "Logic Group AG", logo: "/partners/logic.png", logo2x: "/partners/logic@2x.png", fit: "cover" as FitMode, bg: "rgba(255,255,255,0.06)", size: 110 },
+            { name: "Salt", logo: "/partners/salt.png", fit: "contain" as FitMode, bg: "#ffffff", size: 120, padding: 10 },
+          ].map((p) => (
+            <a key={p.name} className="partnerCard reveal" href="#" onClick={(e) => e.preventDefault()} aria-label={`${p.name} kartı`}>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
+                <PartnerLogo src={p.logo} src2x={(p as any).logo2x} alt={`${p.name} logo`} circular size={(p as any).size ?? 120} fit={(p as any).fit ?? "cover"} padding={(p as any).padding ?? 0} bg={(p as any).bg ?? "rgba(255,255,255,0.06)"} />
+              </div>
+              <div style={{ opacity: .9 }}>Operatör / Servis Sağlayıcı</div>
+            </a>
+          ))}
         </div>
       </Section>
     </>
@@ -1178,16 +1165,16 @@ const Home = () => {
 };
 
 /* =========================================================
-   Kariyer Sayfası (Form)
+   Kariyer Sayfası (Form) — İstenen eklemeler burada
 ========================================================= */
 const WHATSAPP_NUMBER_INTL = "905394297969";
 const LANG_OPTIONS = ["Fransızca", "Almanca", "İngilizce", "Türkçe"] as const;
 
-const TR_CITIES = ["Adana","Adıyaman","Afyonkarahisar","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
-const CH_CITIES = ["Aarau","Baden","Baar","Basel","Bern","Biel/Bienne","Carouge","Chur","Dietikon","Emmen","Frauenfeld","Fribourg","Geneve","Genève","Köniz","Kriens","La Chaux-de-Fonds","Lausanne","Lugano","Luzern","Montreux","Meyrin","Neuchâtel","Rapperswil-Jona","Sion","Schaffhausen","St. Gallen","Thun","Uster","Vernier","Wädenswil","Wetzikon","Wil","Winterthur","Yverdon-les-Bains","Zug","Zürich"];
-const DE_CITIES = ["Aachen","Augsburg","Berlin","Bielefeld","Bochum","Bonn","Braunschweig","Bremen","Chemnitz","Dortmund","Dresden","Duisburg","Düsseldorf","Essen","Frankfurt am Main","Freiburg im Breisgau","Gelsenkirchen","Hagen","Hamburg","Hannover","Heidelberg","Herne","Karlsruhe","Kassel","Kiel","Köln","Krefeld","Leipzig","Leverkusen","Lübeck","Magdeburg","Mainz","Mannheim","Mönchengladbach","München","Münster","Nürnberg","Oberhausen","Oldenburg","Osnabrück","Potsdam","Rostock","Saarbrücken","Solingen","Stuttgart","Wiesbaden","Wuppertal"];
-const FR_CITIES = ["Aix-en-Provence","Amiens","Angers","Annecy","Argenteuil","Avignon","Bordeaux","Boulogne-Billancourt","Brest","Caen","Clermont-Ferrand","Dijon","Grenoble","Le Havre","Lille","Limoges","Lyon","Marseille","Metz","Montpellier","Montreuil","Mulhouse","Nancy","Nantes","Nice","Nîmes","Orléans","Paris","Perpignan","Poitiers","Reims","Rennes","Rouen","Saint-Denis","Saint-Étienne","Strasbourg","Toulon","Toulouse","Tours","Villeurbanne"];
-const MA_CITIES = ["Agadir","Al Hoceïma","Béni Mellal","Berkane","Casablanca","Dakhla","El Jadida","Errachidia","Fès","Guelmim","Kénitra","Khémisset","Khouribga","Ksar El-Kébir","Larache","Laâyoune","Marrakech","Meknès","Mohammédia","Nador","Ouarzazate","Oujda","Rabat","Safi","Settat","Taroudant","Taza","Témara","Tétouan","Tanger"];
+const TR_CITIES = ["Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli", "Diyarbakır", "Edirne", "Elazığ", "Erzincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari", "Hatay", "Isparta", "Mersin", "İstanbul", "İzmir", "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir", "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir", "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat", "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman", "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"];
+const CH_CITIES = ["Aarau", "Baden", "Baar", "Basel", "Bern", "Biel/Bienne", "Carouge", "Chur", "Dietikon", "Emmen", "Frauenfeld", "Fribourg", "Geneve", "Genève", "Köniz", "Kriens", "La Chaux-de-Fonds", "Lausanne", "Lugano", "Luzern", "Montreux", "Meyrin", "Neuchâtel", "Rapperswil-Jona", "Sion", "Schaffhausen", "St. Gallen", "Thun", "Uster", "Vernier", "Wädenswil", "Wetzikon", "Wil", "Winterthur", "Yverdon-les-Bains", "Zug", "Zürich"];
+const DE_CITIES = ["Aachen", "Augsburg", "Berlin", "Bielefeld", "Bochum", "Bonn", "Braunschweig", "Bremen", "Chemnitz", "Dortmund", "Dresden", "Duisburg", "Düsseldorf", "Essen", "Frankfurt am Main", "Freiburg im Breisgau", "Gelsenkirchen", "Hagen", "Hamburg", "Hannover", "Heidelberg", "Herne", "Karlsruhe", "Kassel", "Kiel", "Köln", "Krefeld", "Leipzig", "Leverkusen", "Lübeck", "Magdeburg", "Mainz", "Mannheim", "Mönchengladbach", "München", "Münster", "Nürnberg", "Oberhausen", "Oldenburg", "Osnabrück", "Potsdam", "Rostock", "Saarbrücken", "Solingen", "Stuttgart", "Wiesbaden", "Wuppertal"];
+const FR_CITIES = ["Aix-en-Provence", "Amiens", "Angers", "Annecy", "Argenteuil", "Avignon", "Bordeaux", "Boulogne-Billancourt", "Brest", "Caen", "Clermont-Ferrand", "Dijon", "Grenoble", "Le Havre", "Lille", "Limoges", "Lyon", "Marseille", "Metz", "Montpellier", "Montreuil", "Mulhouse", "Nancy", "Nantes", "Nice", "Nîmes", "Orléans", "Paris", "Perpignan", "Poitiers", "Reims", "Rennes", "Rouen", "Saint-Denis", "Saint-Étienne", "Strasbourg", "Toulon", "Toulouse", "Tours", "Villeurbanne"];
+const MA_CITIES = ["Agadir", "Al Hoceïma", "Béni Mellal", "Berkane", "Casablanca", "Dakhla", "El Jadida", "Errachidia", "Fès", "Guelmim", "Kénitra", "Khémisset", "Khouribga", "Ksar El-Kébir", "Larache", "Laâyoune", "Marrakech", "Meknès", "Mohammédia", "Nador", "Ouarzazate", "Oujda", "Rabat", "Safi", "Settat", "Taroudant", "Taza", "Témara", "Tétouan", "Tanger"];
 
 const COUNTRY_CITY: Record<string, string[]> = {
   "Türkiye": TR_CITIES,
@@ -1268,7 +1255,8 @@ const Kariyer = () => {
     }
   };
 
-  // ---- statik kart aksiyonları ----
+  // ---- İSTENEN EKLEMELER ----
+  // Masaüstünde Gmail Compose, mobilde mailto:
   const onStaticEmailClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -1277,11 +1265,12 @@ const Kariyer = () => {
     window.open(isMobile ? mailtoUrl : gmailUrl, "_blank", "noopener,noreferrer");
   };
 
+  // Konum linki – Google Haritalar:
   const onMapClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
     window.open(MAPS_URL, "_blank", "noopener,noreferrer");
   };
-  // ---- /statik kart aksiyonları ----
+  // ---- /EKLEMELER ----
 
   return (
     <main style={{ background: "#0f172a", minHeight: "100vh", padding: "120px 16px 60px", color: "#e5e7eb" }}>
@@ -1350,6 +1339,7 @@ const Kariyer = () => {
                   <img src="/images/logo.jpg" srcSet="/images/logo.jpg 1x, /images/logo@2x.jpg 2x" alt="FreeConcept Logo" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} loading="lazy" decoding="async" />
                 </div>
                 <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
+                  {/* E-posta: Masaüstünde Gmail, mobilde mailto */}
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <Mail size={16} color="#cbd5e1" />
                     <a
@@ -1361,6 +1351,7 @@ const Kariyer = () => {
                     </a>
                   </div>
 
+                  {/* Konum: Google Haritalar'a götür */}
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <MapPin size={16} color="#cbd5e1" />
                     <a
