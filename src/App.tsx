@@ -1130,6 +1130,26 @@ const Home = () => {
         </div>
       </Section>
 
+      {/* HEDEFİMİZ */}
+      <Section id="hedefimiz" eyebrow={t("sec.mission")} dark padTop={80} padBottom={240}>
+        <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
+          <div className="copy-wide">
+            <p>{t("mission.p1")}</p>
+            <p>{t("mission.p2")}</p>
+            <div style={{ marginTop: 18 }}>
+              <a
+                href="#/kariyer"
+                className="featureCard"
+                style={{ padding: "12px 16px", borderRadius: 12, display: "inline-flex", alignItems: "center", gap: 8, color: "#e5e7eb", textDecoration: "none" }}
+                aria-label="Kariyer sayfasına git"
+              >
+                {t("cta.apply")}
+              </a>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* PARTNER — @2x dosya 1× gibi kullanılıyor, masaüstünde büyük kart */}
       <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={260}>
         <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
@@ -1150,7 +1170,7 @@ const Home = () => {
                 alt="Logic Group AG logo"
                 circular
                 size={160}
-                fit="contain"
+                fit="cover"            {/* <-- boşlukları kaldır */}
                 bg="rgba(255,255,255,0.06)"
               />
             </div>
