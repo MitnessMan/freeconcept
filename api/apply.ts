@@ -34,7 +34,6 @@ function rateLimit(key: string) {
 }
 
 // ====== Google Sheets bağlan ======
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { google } from 'googleapis';
 
 function getJwtClient() {
@@ -88,18 +87,18 @@ function arrToCsv(arr?: string[], max = 20) {
   const a = Array.isArray(arr) ? arr.slice(0, max) : [];
   return a.map(s => (s ?? '').toString().trim()).filter(Boolean).join(', ');
 }
-function getIp(req: VercelRequest) {
-  const xf = (req.headers['x-forwarded-for'] || '') as string;
-  return (xf.split(',')[0] || req.socket?.remoteAddress || '').trim();
+function getIp(req: any) {
+  const xf = (req.headers?.['x-forwarded-for'] || '') as string;
+  return (xf.split(',')[0] || req.socket?.remoteAddress || (req.connection as any)?.remoteAddress || '').trim();
 }
-function sendCors(res: VercelResponse) {
+function sendCors(res: any) {
   res.setHeader('Access-Control-Allow-Origin', '*'); // gerekirse domain ile kısıtla
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
 // ====== Handler ======
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   try {
     sendCors(res);
     if (req.method === 'OPTIONS') return res.status(204).end();
@@ -109,13 +108,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Rate limit (IP + UA)
-    const key = getIp(req) + '|' + (req.headers['user-agent'] || '');
+    const key = getIp(req) + '|' + (req.headers?.['user-agent'] || '');
     if (rateLimit(key)) {
       return res.status(429).json({ ok: false, error: 'Too Many Requests' });
     }
 
-    // Body parse
-    const body: ApplyPayload = typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {};
+    // Body parse (Vercel bazen body'yi string bazen object verir)
+    const body: ApplyPayload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const email = safeStr(body.email, 200);
     const phone = safeStr(body.phone, 200);
     const country = safeStr(body.country, 120);
@@ -124,9 +123,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const about = safeStr(body.about, 4000);
     const kvkk = !!body.kvkk;
     const cvName = safeStr(body.cvName, 300);
-    const lang = safeStr(body.lang, 5) || 'tr';
+    const lang = (safeStr(body.lang, 5) as any) || 'tr';
 
-    // Basit doğrulama (acımasız ve dürüst):
+    // Basit doğrulama:
     if (!kvkk) {
       return res.status(400).json({ ok: false, error: 'KVKK onayı zorunlu.' });
     }
@@ -139,10 +138,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Meta
     const ts = new Date().toISOString();
-    const ua = safeStr(req.headers['user-agent'] as string, 500);
+    const ua = safeStr(req.headers?.['user-agent'] as string, 500);
     const ip = safeStr(getIp(req), 100);
-    const referer = safeStr(req.headers['referer'] as string, 500);
-    const origin = safeStr(req.headers['origin'] as string, 300);
+    const referer = safeStr(req.headers?.['referer'] as string, 500);
+    const origin = safeStr(req.headers?.['origin'] as string, 300);
 
     // Sheet'e yazılacak tek satır
     const row = [
