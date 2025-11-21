@@ -25,7 +25,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     // hero
     "hero.badge": "Kurumsal Telekom Çözümleri",
     "hero.title": "Güvenilir, Ölçeklenebilir ve Hızlı Bağlantı",
-    "hero.lead": "İsviçre pazarında Salt ve Logic Group ekosistemindeki ürünlerin satışını profesyonel, şeffaf ve güvenli süreçlerle gerçekleştiriyoruz.",
+    "hero.lead": "İsviçre pazarında Logic Group ekosistemindeki ürünlerin satışını profesyonel, şeffaf ve güvenli süreçlerle gerçekleştiriyoruz.",
     "cta.apply": "İş Başvurusu Yap",
     "badge.iso": "ISO 27001",
     "badge.kvkk": "KVKK Uyumlu",
@@ -38,7 +38,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     // feature cards
     "feat.sales.eyebrow": "Satış & Kampanya",
     "feat.sales.title": "Operatör Ürün Satışı",
-    "feat.sales.desc": "Salt, LG Net ve LG Mobile için uçtan uca satış ve aktivasyon.",
+    "feat.sales.desc": "LG Net ve LG Mobile için uçtan uca satış ve aktivasyon.",
     "feat.ch.eyebrow": "İsviçre Pazarı",
     "feat.ch.title": "Çok Dilli Ekip",
     "feat.ch.desc": "Pazar için çok dilli satış ve müşteri iletişimi.",
@@ -62,7 +62,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     // about
     "about.p1": "Free Concept Telekomünikasyon (Antalya) ve Ce Concept (Fas), 2021 yılından beri İsviçre telekomünikasyon sektöründe kısa sürede büyük başarılara imza atmış iki güçlü şirkettir. Kuruluşumuzun ilk gününden beri İsviçre'nin önde gelen şirketlerinden Logic Group AG ile beraber çalışmaktayız.",
-    "about.p2": "Bu stratejik ortaklık sayesinde Salt'ın yanı sıra LG Net ve LG Mobile gibi yeni markaların İsviçre pazarındaki lansmanını üstlenen ilk ekip olduk. Antalya'da küçük bir ekip ile başlayan bu yolculuğumuza şu anda iki ülkede üç ofis ile devam ediyoruz.",
+    "about.p2": "Bu stratejik ortaklık sayesinde LG Net ve LG Mobile gibi yeni markaların İsviçre pazarındaki lansmanını üstlenen ilk ekip olduk. Antalya'da küçük bir ekip ile başlayan bu yolculuğumuza şu anda iki ülkede üç ofis ile devam ediyoruz.",
     "about.p3": "Fas'taki ofislerimiz, yüksek standartları, çok dilli kadroları ve profesyonel yapısıyla İsviçre pazarı için en güvenilir ve kaliteli satış merkezlerinden biri haline geldik. Yeni ürün ve projelerin lansmanlarında aktif rol oynayarak sadece satış yapan değil, pazarın yönünü belirleyen güçlü bir ekip olduk. İsviçre'nin telekom pazarına hakim ve tecrübeli yöneticilerimizin bilgi birikimi sayesinde satış sürecinde müşterilerimize güven ortamı yaratıyor ve uzun vadede ilişkiler kuruyoruz.",
 
     // mission
@@ -127,7 +127,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "hero.badge": "Unternehmens-Telekom-Lösungen",
     "hero.title": "Zuverlässige, skalierbare und schnelle Verbindung",
-    "hero.lead": "Wir verkaufen Produkte im Salt- & Logic-Group-Ökosystem für den Schweizer Markt – professionell, transparent und sicher.",
+    "hero.lead": "Wir verkaufen Produkte im Logic-Group-Ökosystem für den Schweizer Markt – professionell, transparent und sicher.",
     "cta.apply": "Jetzt bewerben",
     "badge.iso": "ISO 27001",
     "badge.kvkk": "DSGVO-konform",
@@ -139,7 +139,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "feat.sales.eyebrow": "Verkauf & Kampagne",
     "feat.sales.title": "Verkauf von Carrier-Produkten",
-    "feat.sales.desc": "End-to-End-Vertrieb und Aktivierung für Salt, LG Net und LG Mobile.",
+    "feat.sales.desc": "End-to-End-Vertrieb und Aktivierung für LG Net und LG Mobile.",
     "feat.ch.eyebrow": "Schweizer Markt",
     "feat.ch.title": "Mehrsprachiges Team",
     "feat.ch.desc": "Mehrsprachige Kundenkommunikation und Vertrieb.",
@@ -161,7 +161,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     "sec.partners": "UNSERE PARTNER",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) und Ce Concept (Marokko) sind seit 2021 erfolgreich in der Schweizer Telekombranche. Seit dem ersten Tag arbeiten wir mit der Logic Group AG zusammen.",
-    "about.p2": "Dank dieser Partnerschaft führten wir die Einführung von Salt sowie neuer Marken wie LG Net und LG Mobile in der Schweiz an. Was in Antalya klein begann, setzen wir heute mit drei Büros in zwei Ländern fort.",
+    "about.p2": "Dank dieser Partnerschaft führten wir die Einführung neuer Marken wie LG Net und LG Mobile in der Schweiz an. Was in Antalya klein begann, setzen wir heute mit drei Büros in zwei Ländern fort.",
     "about.p3": "Unsere marokkanischen Büros sind mit hohen Standards und mehrsprachigen Teams ein verlässlicher Vertriebsstandort für die Schweiz. Erfahrene Führung schafft Vertrauen und langfristige Beziehungen.",
 
     "mission.p1": "Wir vertiefen die Partnerschaft mit Logic Group, launchen neue Marken und steuern die gesamte Journey – Verkauf, Aktivierung, After-Sales und Qualität – transparent und messbar.",
@@ -221,7 +221,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "hero.badge": "Solutions télécoms d’entreprise",
     "hero.title": "Connexion fiable, évolutive et rapide",
-    "hero.lead": "Nous commercialisons les produits de l’écosystème Salt & Logic Group pour le marché suisse avec des processus professionnels, transparents et sûrs.",
+    "hero.lead": "Nous commercialisons les produits de l’écosystème Logic Group pour le marché suisse avec des processus professionnels, transparents et sûrs.",
     "cta.apply": "Postuler",
     "badge.iso": "ISO 27001",
     "badge.kvkk": "Conforme RGPD",
@@ -233,7 +233,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "feat.sales.eyebrow": "Vente & Campagne",
     "feat.sales.title": "Vente de produits opérateur",
-    "feat.sales.desc": "Vente et activation bout-en-bout pour Salt, LG Net et LG Mobile.",
+    "feat.sales.desc": "Vente et activation bout-en-bout pour LG Net et LG Mobile.",
     "feat.ch.eyebrow": "Marché suisse",
     "feat.ch.title": "Équipe multilingue",
     "feat.ch.desc": "Communication client et vente multilingues.",
@@ -255,7 +255,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     "sec.partners": "NOS PARTENAIRES",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) et Ce Concept (Maroc) réussissent depuis 2021 sur le marché télécom suisse. Depuis le premier jour, nous collaborons avec Logic Group AG.",
-    "about.p2": "Grâce à ce partenariat, nous avons lancé Salt ainsi que de nouvelles marques comme LG Net et LG Mobile en Suisse. L’aventure commencée à Antalya continue avec trois bureaux dans deux pays.",
+    "about.p2": "Grâce à ce partenariat, nous avons lancé de nouvelles marques comme LG Net et LG Mobile en Suisse. L’aventure commencée à Antalya continue avec trois bureaux dans deux pays.",
     "about.p3": "Nos bureaux au Maroc, avec leurs standards élevés et équipes multilingues, sont devenus l’un des centres de vente les plus fiables pour la Suisse. Des dirigeants expérimentés créent la confiance et des relations durables.",
 
     "mission.p1": "Nous voulons approfondir notre partenariat avec Logic Group, lancer de nouvelles marques et piloter l’ensemble du parcours — vente, activation, après-vente et qualité — de manière transparente et mesurable.",
@@ -315,7 +315,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "hero.badge": "Enterprise Telecom Solutions",
     "hero.title": "Reliable, Scalable and Fast Connectivity",
-    "hero.lead": "We sell products in the Salt & Logic Group ecosystem for the Swiss market with professional, transparent and secure processes.",
+    "hero.lead": "We sell products in the Logic Group ecosystem for the Swiss market with professional, transparent and secure processes.",
     "cta.apply": "Apply Now",
     "badge.iso": "ISO 27001",
     "badge.kvkk": "GDPR-Compliant",
@@ -327,7 +327,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
 
     "feat.sales.eyebrow": "Sales & Campaign",
     "feat.sales.title": "Operator Product Sales",
-    "feat.sales.desc": "End-to-end sales and activation for Salt, LG Net and LG Mobile.",
+    "feat.sales.desc": "End-to-end sales and activation for LG Net and LG Mobile.",
     "feat.ch.eyebrow": "Swiss Market",
     "feat.ch.title": "Multilingual Team",
     "feat.ch.desc": "Multilingual sales and customer communication.",
@@ -349,7 +349,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     "sec.partners": "OUR PARTNERS",
 
     "about.p1": "Free Concept Telekomünikasyon (Antalya) and Ce Concept (Morocco) have achieved strong results in the Swiss telecom market since 2021. Since day one, we have worked with Logic Group AG.",
-    "about.p2": "Thanks to this partnership we led the launches of Salt as well as new brands like LG Net and LG Mobile in Switzerland. What began with a small team in Antalya continues with three offices in two countries.",
+    "about.p2": "Thanks to this partnership we led the launches of new brands like LG Net and LG Mobile in Switzerland. What began with a small team in Antalya continues with three offices in two countries.",
     "about.p3": "Our Moroccan offices, with high standards and multilingual teams, have become one of the most trusted sales hubs for the Swiss market. With experienced leadership, we build trust and long-term relationships.",
 
     "mission.p1": "We aim to deepen our strategic partnership with Logic Group, launch new brands, and manage the entire journey—sales, activation, after-sales and quality—transparently and measurably.",
