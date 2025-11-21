@@ -6,6 +6,9 @@ import {
   Mail, MapPin, Users, Building2, ChevronDown
 } from "lucide-react";
 
+/* ===== API endpoint ===== */
+const APPLY_URL = "/api/apply";
+
 /* =========================================================
    Basit i18n altyapısı (TR/DE/FR/EN)
 ========================================================= */
@@ -1150,7 +1153,7 @@ const Home = () => {
         </div>
       </Section>
 
-      {/* PARTNER — @2x dosya 1× gibi kullanılıyor, masaüstünde büyük kart */}
+      {/* PARTNER */}
       <Section id="partnerler" eyebrow={t("sec.partners")} dark padTop={260}>
         <div className="reveal" style={{ display: "flex", justifyContent: "center" }}>
           <a
@@ -1163,7 +1166,6 @@ const Home = () => {
             style={{ maxWidth: 760, width: "100%" }}
           >
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
-              {/* Partner logo: desktop’ta @2x dosyayı 1x gibi kullan */}
               <PartnerLogo
                 src="/partners/logic@2x.png"
                 alt="Logic Group AG logo"
@@ -1215,6 +1217,9 @@ const Kariyer = () => {
   const [kvkk, setKvkk] = React.useState(true);
   const [cvName, setCvName] = React.useState("");
   const [cvErr, setCvErr] = React.useState<string | null>(null);
+
+  // YENİ: API durumları
+  const [saving, setSaving] = React.useState(false);
 
   const toggleLang = (l: string) => setLangs((prev) => (prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]));
 
@@ -1273,6 +1278,47 @@ const Kariyer = () => {
       setCvName(name);
     }
   };
+
+  // ======= YENİ: /api/apply’a POST =======
+  async function submitToApi(e: React.MouseEvent) {
+    e.preventDefault();
+    if (!kvkk) return alert(t("career.err.kvkk"));
+    if (!email.trim()) return alert("E-posta zorunlu.");
+    if (!phone.trim()) return alert("Telefon zorunlu.");
+
+    setSaving(true);
+    try {
+      const payload = {
+        email,
+        phone,
+        country,
+        city,
+        languages: langs,
+        about,
+        kvkk,
+        cvName,
+        lang,
+      };
+
+      const res = await fetch(APPLY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({} as any));
+      if (!res.ok) throw new Error(data?.error || "Sunucu hatası");
+
+      alert("Başvurun kaydedildi. Teşekkürler!");
+      // istersen formu sıfırla:
+      // setEmail(""); setPhone(""); setCountry(""); setCity(""); setLangs([]); setAbout(""); setCvName("");
+    } catch (err: any) {
+      alert(err?.message || "Sunucu hatası");
+    } finally {
+      setSaving(false);
+    }
+  }
+  // ======================================
 
   // Masaüstünde Gmail Compose, mobilde mailto:
   const onStaticEmailClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
@@ -1338,6 +1384,17 @@ const Kariyer = () => {
                 <input type="checkbox" checked={kvkk} onChange={(e) => setKvkk(e.target.checked)} /> {t("career.kvkk")}
               </label>
 
+              {/* YENİ: /api/apply’a gönder */}
+              <button
+                style={{ ...primaryBtn, background: "#0ea5e9" }}
+                onClick={submitToApi}
+                disabled={saving || !kvkk || !email || !phone}
+                aria-busy={saving}
+              >
+                {saving ? "Kaydediliyor..." : "Başvuruyu Kaydet"}
+              </button>
+
+              {/* Opsiyonel: mail & WhatsApp gönderimleri */}
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <button style={primaryBtn} onClick={sendGmail}>{t("career.btn.mail")}</button>
                 <button style={whatsBtn} onClick={sendWhatsApp}>{t("career.btn.wa")}</button>
