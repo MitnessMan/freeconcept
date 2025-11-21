@@ -58,7 +58,7 @@ const I18N: Record<LangCode, Record<string, string>> = {
     // sections
     "sec.about": "BİZ KİMİZ",
     "sec.mission": "HEDEFİMİZ",
-    "sec.partners": "PARTNERİMİZ",   // tekil
+    "sec.partners": "PARTNERİMİZ",
 
     // about
     "about.p1": "Free Concept Telekomünikasyon (Antalya) ve Ce Concept (Fas), 2021 yılından beri İsviçre telekomünikasyon sektöründe kısa sürede büyük başarılara imza atmış iki güçlü şirkettir. Kuruluşumuzun ilk gününden beri İsviçre'nin önde gelen şirketlerinden Logic Group AG ile beraber çalışmaktayız.",
@@ -1163,14 +1163,13 @@ const Home = () => {
             style={{ maxWidth: 760, width: "100%" }}
           >
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
+              {/* Partner logo: desktop’ta @2x dosyayı 1x gibi kullan */}
               <PartnerLogo
-                /* Masaüstünde netlik için 2× dosyayı 1× gibi kullanıyoruz */
                 src="/partners/logic@2x.png"
-                /* 3× dosyan yoksa src2x VERME—retina yine net olur */
                 alt="Logic Group AG logo"
                 circular
                 size={160}
-                fit="cover"            {/* <-- boşlukları kaldır */}
+                fit="cover"
                 bg="rgba(255,255,255,0.06)"
               />
             </div>
