@@ -6,9 +6,6 @@ import {
   Mail, MapPin, Users, Building2, ChevronDown
 } from "lucide-react";
 
-/* ===== API endpoint (kullanılmıyor) ===== */
-const APPLY_URL = "/api/apply";
-
 /* =========================================================
    Basit i18n altyapısı (TR/DE/FR/EN)
 ========================================================= */
@@ -516,7 +513,7 @@ function PartnerLogo({
           overflow: "hidden",
           background: bg,
           border: `1px solid ${borderColor}`,
-          boxShadow: "0 6px 18px rgba(0,0,0,.25)",
+          boxShadow: "0 6px 18px rgba(0,0,0,.25)`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
