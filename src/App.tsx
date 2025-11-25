@@ -1187,8 +1187,11 @@ const Home = () => {
 
 /* =========================================================
    Kariyer Sayfası (Form)
+   NOT: İSTENEN DEĞİŞİKLİKLER
+   - WhatsApp numarası 0530 311 04 94 → uluslararası: 905303110494
+   - CV / Dosya seç alanı tamamen kaldırıldı
 ========================================================= */
-const WHATSAPP_NUMBER_INTL = "905394297969";
+const WHATSAPP_NUMBER_INTL = "905303110494";
 const LANG_OPTIONS = ["Fransızca", "Almanca", "İngilizce", "Türkçe"] as const;
 
 const TR_CITIES = ["Adana","Adıyaman","Afyonkarahisar","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
@@ -1215,8 +1218,6 @@ const Kariyer = () => {
   const [langs, setLangs] = React.useState<string[]>([]);
   const [about, setAbout] = React.useState("");
   const [kvkk, setKvkk] = React.useState(true);
-  const [cvName, setCvName] = React.useState("");
-  const [cvErr, setCvErr] = React.useState<string | null>(null);
 
   // YENİ: API durumları
   const [saving, setSaving] = React.useState(false);
@@ -1235,7 +1236,6 @@ const Kariyer = () => {
       `${L("msg.langs")}: ${langText}`, "",
       `${L("msg.summary")}:`,
       about || "—", "",
-      cvName ? `${L("msg.cv")}: ${cvName} ${L("msg.cv.note")}` : undefined, "",
       L("msg.sent")
     ].filter(Boolean).join("\n");
   };
@@ -1263,22 +1263,6 @@ const Kariyer = () => {
 
   const onCountryChange = (val: string) => { setCountry(val as any); setCity(""); };
 
-  const onCvChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setCvErr(null);
-    const f = e.target.files?.[0];
-    if (!f) { setCvName(""); return; }
-    const okExt = [".pdf", ".doc", ".docx"];
-    const name = f.name || "";
-    the: {
-      const lower = name.toLowerCase();
-      const hasExt = okExt.some(ext => lower.endsWith(ext));
-      if (!hasExt) { setCvErr(t("career.cv.err.ext")); e.target.value = ""; setCvName(""); break the; }
-      const maxBytes = 10 * 1024 * 1024;
-      if (f.size > maxBytes) { setCvErr(t("career.cv.err.size")); e.target.value = ""; setCvName(""); break the; }
-      setCvName(name);
-    }
-  };
-
   // ======= YENİ: /api/apply’a POST =======
   async function submitToApi(e: React.MouseEvent) {
     e.preventDefault();
@@ -1296,7 +1280,6 @@ const Kariyer = () => {
         languages: langs,
         about,
         kvkk,
-        cvName,
         lang,
       };
 
@@ -1311,7 +1294,7 @@ const Kariyer = () => {
 
       alert("Başvurun kaydedildi. Teşekkürler!");
       // istersen formu sıfırla:
-      // setEmail(""); setPhone(""); setCountry(""); setCity(""); setLangs([]); setAbout(""); setCvName("");
+      // setEmail(""); setPhone(""); setCountry(""); setCity(""); setLangs([]); setAbout("");
     } catch (err: any) {
       alert(err?.message || "Sunucu hatası");
     } finally {
@@ -1375,16 +1358,13 @@ const Kariyer = () => {
 
               <textarea placeholder={t("career.about.ph")} rows={4} style={inputStyle} value={about} onChange={(e) => setAbout(e.target.value)} />
 
-              <div>
-                <input type="file" style={inputStyle} onChange={onCvChange} accept=".pdf,.doc,.docx" />
-                {cvErr && <div style={{ color: "#fda4af", fontSize: 13, marginTop: 6 }}>{cvErr}</div>}
-              </div>
+              {/* CV / Dosya alanı istek üzerine kaldırıldı */}
 
               <label style={{ fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
                 <input type="checkbox" checked={kvkk} onChange={(e) => setKvkk(e.target.checked)} /> {t("career.kvkk")}
               </label>
 
-              {/* YENİ: /api/apply’a gönder */}
+              {/* /api/apply’a gönder */}
               <button
                 style={{ ...primaryBtn, background: "#0ea5e9" }}
                 onClick={submitToApi}
@@ -1394,7 +1374,7 @@ const Kariyer = () => {
                 {saving ? "Kaydediliyor..." : "Başvuruyu Kaydet"}
               </button>
 
-              {/* Opsiyonel: mail & WhatsApp gönderimleri */}
+              {/* E-posta & WhatsApp */}
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <button style={primaryBtn} onClick={sendGmail}>{t("career.btn.mail")}</button>
                 <button style={whatsBtn} onClick={sendWhatsApp}>{t("career.btn.wa")}</button>
