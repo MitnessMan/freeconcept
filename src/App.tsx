@@ -513,7 +513,7 @@ function PartnerLogo({
           overflow: "hidden",
           background: bg,
           border: `1px solid ${borderColor}`,
-          boxShadow: "0 6px 18px rgba(0,0,0,.25)`,
+          boxShadow: "0 6px 18px rgba(0,0,0,.25)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -1353,14 +1353,12 @@ const Kariyer = () => {
                 style={inputStyle}
                 value={about}
                 onChange={(e) => setAbout(e.target.value)}
-                /* opsiyonel */
               />
 
               <label style={{ fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
                 <input type="checkbox" checked={kvkk} onChange={(e) => setKvkk(e.target.checked)} /> {t("career.kvkk")}
               </label>
 
-              {/* SADECE e-posta ve WhatsApp butonları (Save kaldırıldı) */}
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <button style={primaryBtn} onClick={sendGmail}>{t("career.btn.mail")}</button>
                 <button style={whatsBtn} onClick={sendWhatsApp}>{t("career.btn.wa")}</button>
