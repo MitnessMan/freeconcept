@@ -6,7 +6,7 @@ import {
   Mail, MapPin, Users, Building2, ChevronDown
 } from "lucide-react";
 
-/* ===== API endpoint ===== */
+/* ===== API endpoint (kullanılmıyor) ===== */
 const APPLY_URL = "/api/apply";
 
 /* =========================================================
@@ -1187,9 +1187,9 @@ const Home = () => {
 
 /* =========================================================
    Kariyer Sayfası (Form)
-   NOT: İSTENEN DEĞİŞİKLİKLER
-   - WhatsApp numarası 0530 311 04 94 → uluslararası: 905303110494
-   - CV / Dosya seç alanı tamamen kaldırıldı
+   - WhatsApp: 0530 311 04 94 (905303110494, dokunulmadı)
+   - "Başvuruyu Kaydet" KALDIRILDI
+   - Zorunlu alan doğrulama eklendi (about opsiyonel)
 ========================================================= */
 const WHATSAPP_NUMBER_INTL = "905303110494";
 const LANG_OPTIONS = ["Fransızca", "Almanca", "İngilizce", "Türkçe"] as const;
@@ -1211,19 +1211,41 @@ const COUNTRY_CITY: Record<string, string[]> = {
 const Kariyer = () => {
   const { t, lang } = useT();
 
-  const [email, setEmail] = React.useState("");
-  const [phone, setPhone] = React.useState("");
+  const [email, setEmail]   = React.useState("");
+  const [phone, setPhone]   = React.useState("");
   const [country, setCountry] = React.useState<keyof typeof COUNTRY_CITY | "">("");
-  const [city, setCity] = React.useState("");
-  const [langs, setLangs] = React.useState<string[]>([]);
-  const [about, setAbout] = React.useState("");
-  const [kvkk, setKvkk] = React.useState(true);
+  const [city, setCity]     = React.useState("");
+  const [langs, setLangs]   = React.useState<string[]>([]);
+  const [about, setAbout]   = React.useState("");
+  const [kvkk, setKvkk]     = React.useState(true);
 
-  // YENİ: API durumları
-  const [saving, setSaving] = React.useState(false);
+  const toggleLang = (l: string) =>
+    setLangs(prev => prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]);
 
-  const toggleLang = (l: string) => setLangs((prev) => (prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]));
+  const onCountryChange = (val: string) => { setCountry(val as any); setCity(""); };
 
+  // —— Zorunlu alan doğrulama (about opsiyonel) ——
+  function validate(): boolean {
+    const missing: string[] = [];
+
+    const emailTrim = email.trim();
+    const emailOk = !!emailTrim && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrim);
+    if (!emailOk) missing.push("E-posta");
+
+    if (!phone.trim()) missing.push("Telefon");
+    if (!country) missing.push("Ülke");
+    if (!city)    missing.push("Şehir");
+    if (langs.length === 0) missing.push("Bildiğiniz diller");
+    if (!kvkk) missing.push("KVKK onayı");
+
+    if (missing.length) {
+      alert(`Lütfen şu alanları doldurun:\n- ${missing.join("\n- ")}`);
+      return false;
+    }
+    return true;
+  }
+
+  // —— Mesaj metni ——
   const buildText = () => {
     const L = (k: string) => I18N[lang][k] ?? I18N.tr[k] ?? k;
     const langText = langs.length ? langs.join(", ") : "—";
@@ -1237,82 +1259,40 @@ const Kariyer = () => {
       `${L("msg.summary")}:`,
       about || "—", "",
       L("msg.sent")
-    ].filter(Boolean).join("\n");
+    ].join("\n");
   };
 
+  // —— E-posta & WhatsApp (doğrulama ile) ——
   const openGmailCompose = (subject: string, body: string) => {
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const gmailUrl  = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     const mailtoUrl = `mailto:${encodeURIComponent(HR_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isMobile  = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     window.open(isMobile ? mailtoUrl : gmailUrl, "_blank", "noopener,noreferrer");
   };
 
   const sendGmail = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!kvkk) { alert(t("career.err.kvkk")); return; }
+    if (!validate()) return;
     const su = I18N[lang]["msg.subject"] ?? I18N.tr["msg.subject"];
     openGmailCompose(su, buildText());
   };
 
   const sendWhatsApp = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!kvkk) { alert(t("career.err.kvkk")); return; }
+    if (!validate()) return;
     const url = `https://wa.me/${WHATSAPP_NUMBER_INTL}?text=${encodeURIComponent(buildText())}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  const onCountryChange = (val: string) => { setCountry(val as any); setCity(""); };
-
-  // ======= YENİ: /api/apply’a POST =======
-  async function submitToApi(e: React.MouseEvent) {
-    e.preventDefault();
-    if (!kvkk) return alert(t("career.err.kvkk"));
-    if (!email.trim()) return alert("E-posta zorunlu.");
-    if (!phone.trim()) return alert("Telefon zorunlu.");
-
-    setSaving(true);
-    try {
-      const payload = {
-        email,
-        phone,
-        country,
-        city,
-        languages: langs,
-        about,
-        kvkk,
-        lang,
-      };
-
-      const res = await fetch(APPLY_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json().catch(() => ({} as any));
-      if (!res.ok) throw new Error(data?.error || "Sunucu hatası");
-
-      alert("Başvurun kaydedildi. Teşekkürler!");
-      // istersen formu sıfırla:
-      // setEmail(""); setPhone(""); setCountry(""); setCity(""); setLangs([]); setAbout("");
-    } catch (err: any) {
-      alert(err?.message || "Sunucu hatası");
-    } finally {
-      setSaving(false);
-    }
-  }
-  // ======================================
-
-  // Masaüstünde Gmail Compose, mobilde mailto:
+  // Masaüstünde Gmail Compose, mobilde mailto (statik karttaki link)
   const onStaticEmailClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const mailtoUrl = `mailto:${HR_EMAIL}`;
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}`;
+    const gmailUrl  = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(HR_EMAIL)}`;
     window.open(isMobile ? mailtoUrl : gmailUrl, "_blank", "noopener,noreferrer");
   };
 
-  // Konum linki – Google Haritalar:
   const onMapClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
     window.open(MAPS_URL, "_blank", "noopener,noreferrer");
@@ -1328,24 +1308,38 @@ const Kariyer = () => {
           <div style={{ background: "#0f172a", border: "1px solid #233146", borderRadius: 16, padding: 20 }}>
             <form style={{ display: "grid", gap: 14 }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <input placeholder={t("career.email.ph")} style={inputStyle} value={email} onChange={e => setEmail(e.target.value)} inputMode="email" />
-                <input placeholder={t("career.phone.ph")} style={inputStyle} value={phone} onChange={e => setPhone(e.target.value)} inputMode="tel" />
+                <input
+                  placeholder={t("career.email.ph")}
+                  style={inputStyle}
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  inputMode="email"
+                  aria-required
+                />
+                <input
+                  placeholder={t("career.phone.ph")}
+                  style={inputStyle}
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                  inputMode="tel"
+                  aria-required
+                />
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <select value={country} onChange={(e) => onCountryChange(e.target.value)} style={selectStyle}>
+                <select value={country} onChange={(e) => onCountryChange(e.target.value)} style={selectStyle} aria-required>
                   <option value="">{t("career.country")}</option>
                   {Object.keys(COUNTRY_CITY).sort((a, b) => a.localeCompare(b, "tr")).map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
 
-                <select value={city} onChange={(e) => setCity(e.target.value)} style={selectStyle} disabled={!country}>
+                <select value={city} onChange={(e) => setCity(e.target.value)} style={selectStyle} disabled={!country} aria-required>
                   <option value="">{country ? t("career.city") : t("career.chooseCountryFirst")}</option>
                   {country && [...COUNTRY_CITY[country]].sort((a, b) => a.localeCompare(b, "tr")).map(ct => <option key={ct} value={ct}>{ct}</option>)}
                 </select>
               </div>
 
               <div style={{ ...inputStyle, padding: 12 }}>
-                <div style={{ fontSize: 14, opacity: .9, marginBottom: 8 }}>{t("career.langs")}</div>
+                <div style={{ fontSize: 14, opacity: .9, marginBottom: 8 }}>{t("career.langs")} <span style={{ opacity:.7 }}>(en az 1)</span></div>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                   {LANG_OPTIONS.map(l => (
                     <label key={l} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
@@ -1356,25 +1350,20 @@ const Kariyer = () => {
                 </div>
               </div>
 
-              <textarea placeholder={t("career.about.ph")} rows={4} style={inputStyle} value={about} onChange={(e) => setAbout(e.target.value)} />
-
-              {/* CV / Dosya alanı istek üzerine kaldırıldı */}
+              <textarea
+                placeholder={t("career.about.ph")}
+                rows={4}
+                style={inputStyle}
+                value={about}
+                onChange={(e) => setAbout(e.target.value)}
+                /* opsiyonel */
+              />
 
               <label style={{ fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
                 <input type="checkbox" checked={kvkk} onChange={(e) => setKvkk(e.target.checked)} /> {t("career.kvkk")}
               </label>
 
-              {/* /api/apply’a gönder */}
-              <button
-                style={{ ...primaryBtn, background: "#0ea5e9" }}
-                onClick={submitToApi}
-                disabled={saving || !kvkk || !email || !phone}
-                aria-busy={saving}
-              >
-                {saving ? "Kaydediliyor..." : "Başvuruyu Kaydet"}
-              </button>
-
-              {/* E-posta & WhatsApp */}
+              {/* SADECE e-posta ve WhatsApp butonları (Save kaldırıldı) */}
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <button style={primaryBtn} onClick={sendGmail}>{t("career.btn.mail")}</button>
                 <button style={whatsBtn} onClick={sendWhatsApp}>{t("career.btn.wa")}</button>
